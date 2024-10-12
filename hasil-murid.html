@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: whitesmoke;
+            color: black;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        /* Center content and add padding */
+        .content {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        /* Big logo styling */
+        .big-logo {
+            display: block;
+            margin: 30px auto;
+            max-width: 200px;
+            height: auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 18px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styling the iframe */
+        iframe {
+            border-radius: 10px;
+            border: none;
+            width: 100%;
+            height: 400px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
+        }
+
+        iframe:hover {
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .texback {
+             background-color: rgba(0, 0, 0, 0.6);
+             padding: 35px;
+            border-radius: 10px;
+             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin-top: 20px;
+            width: 50%;
+        }
+
+        .texback h2 {
+            font-size: 40px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .texback p {
+            font-size: 18px;
+            color: #dddddd;
+        }
+
+        .tutorial {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .tutorial h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .container h3{
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step h4 {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .step {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+<script type="module">
+    window.toggleNavPane = function () {
+        const sidebar = document.getElementById('sidebarz');
+
+        // Toggle the 'active' class to open/close the sidebar
+        sidebar.classList.toggle('active');
+
+        // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+        
+    };
+</script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Big Logo Section -->
+    <section class="hero">
+        <img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Big Logo" class="big-logo">
+        <section class="texback">
+            <h2>Laman Hasil Murid</h2>
+            <p>Muat naik dan lihat projek-projek yang dihasilkan oleh murid-murid SAKTI di sini.</p>
+        </section>
+        <div class="container">
+            <h3>Hasil-Hasil Murid</h3>
+            <iframe src="https://drive.google.com/embeddedfolderview?id=1Lpi0iVvExVx5COUl9yjZZClhGwc-v8Gd#grid" width="100%" height="600" frameborder="0"></iframe>
+            <section class="tutorial">
+                <h3>Cara Muat Naik dan Lihat Fail</h3>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Peraturan Memuat Naik Fail</h4>
+                        <p>Setiap fail mestilah mempunyai folder yang ditulis dengan nama pemuat naik dan kelas. Fail yang dimuat naik haruslah berbentuk projek. Apa-apa fail yang tidak memenuhi syarat akan dihapuskan.</p>
+
+                    </div>
+                    <div class="step">
+                        <h4>Langkah 1: Muat Naik Fail</h4>
+                        <p>Untuk memuat naik fail, klik butang "New" di bahagian atas sebelah kiri halaman Google Drive, kemudian pilih "Upload File" Semak imbas fail pada komputer anda dan muat naiknya ke folder.</p>
+                    </div>
+                    <div class="step">
+                        <h4>Langkah 2: Lihat Fail</h4>
+                        <p>Semua fail yang dimuat naik akan muncul dalam folder di atas. Anda boleh bertukar antara grid dan paparan senarai menggunakan ikon di penjuru kanan sebelah atas. Klik pada mana-mana fail untuk membuka dan melihatnya secara langsung.</p>
+                    </div>
+                    <div class="step">
+                        <h4>Langkah 3: Susun Fail</h4>
+                        <p>Untuk menyusun fail, gunakan struktur folder dalam Google Drive. Anda boleh menyeret dan melepaskan fail ke dalam folder atau menamakan semula fail untuk kejelasan yang lebih baik.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>

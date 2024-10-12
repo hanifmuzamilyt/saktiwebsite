@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utama</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        #commentsContainer {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        .comment {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 30px;
+            margin: 10px 0;
+            position: relative;
+            text-align: left; /* Align text to the left */
+        }
+        .comment .username {
+            font-weight: bold;
+            color: #007bff; /* Bootstrap primary color */
+        }
+        .comment .timestamp {
+            font-size: 0.9em;
+            color: #888;
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+        }
+
+        .dashboard-link {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard-link:hover {
+            background-color: #0056b3;
+        }
+
+        
+        .profile-pic{
+            transition: transform 0.3s ease;
+        }
+        .profile-pic:hover{
+            transform: scale(1.1);
+        }
+
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, addDoc, serverTimestamp, updateDoc, arrayUnion, collection, getDocs, query, where, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+            authDomain: "sakti-web-app-2024.firebaseapp.com",
+            projectId: "sakti-web-app-2024",
+            storageBucket: "sakti-web-app-2024.appspot.com",
+            messagingSenderId: "623914117271",
+            appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Attach the event listener after the DOM is fully loaded
+            const mediaForm = document.getElementById('media-upload-form');
+            
+            if (mediaForm) {
+                mediaForm.addEventListener('submit', uploadMedia); // Attach uploadMedia correctly
+                console.log("Event listener for media-upload-form is attached.");
+            } else {
+                console.error("Form with ID 'media-upload-form' not found.");
+            }
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    await loadUserProfile(user.uid);
+
+                    await loadComments();
+                    
+                } else {
+                    window.location.href = 'login.html'; // Redirect to login if not authenticated
+                }
+            });
+        });
+
+        let debounceTimer;
+        document.getElementById('search-input').oninput = function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(searchUsers, 300); // Wait 300ms before triggering searchUsers
+        };
+
+        window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+        };
+
+        async function searchUsers() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (input.length === 0) {
+                resultsDiv.innerHTML = '';
+                resultsDiv.style.display = 'none';
+                return;
+            }
+            resultsDiv.style.display = 'block';
+
+            const usersRef = collection(db, 'users');
+            
+            // Construct two separate queries for name and username
+            const usernameQuery = query(usersRef, where('username', '>=', input), where('username', '<=', input + '\uf8ff'));
+            const nameQuery = query(usersRef, where('name', '>=', input), where('name', '<=', input + '\uf8ff'));
+
+            try {
+                const [usernameSnapshot, nameSnapshot] = await Promise.all([
+                    getDocs(usernameQuery),
+                    getDocs(nameQuery)
+                ]);
+
+                const combinedResults = new Set();
+
+                // Helper function to handle query snapshots
+                function processSnapshot(snapshot) {
+                    snapshot.forEach((doc) => {
+                        const user = doc.data();
+                        const uid = doc.id; // Get the UID from the document ID
+
+                        if (!combinedResults.has(uid)) { // Avoid duplicate entries
+                            combinedResults.add(uid);
+
+                            // Create the user card element
+                            const userElement = document.createElement('div');
+                            userElement.className = 'user-card';
+
+                            userElement.innerHTML = `
+                                <div class="user-details">
+                                    <h3>${user.name || 'No Name Available'}</h3>
+                                    <p>Username: ${user.username || 'N/A'}</p>
+                                    <p>Class: ${user.class || 'N/A'}</p>
+                                    <p>House: ${user.house || 'N/A'}</p>
+                                    <p>Position: ${user.position || 'N/A'}</p>
+                                    <button class="dashboard-link" onclick="window.location.href='user_dashboard.html?user=${uid}'">View Dashboard</button>
+                                </div>
+                            `;
+
+                            resultsDiv.appendChild(userElement);
+                        }
+                    });
+                }
+
+                // Process both query snapshots
+                processSnapshot(usernameSnapshot);
+                processSnapshot(nameSnapshot);
+
+                if (combinedResults.size === 0) {
+                    resultsDiv.innerHTML = "<p>No results found.</p>";
+                }
+
+            } catch (error) {
+                console.error("Error searching users: ", error);
+                alert("Error searching users. Please check the console for more details.");
+                resultsDiv.innerHTML = "<p>Error retrieving results. Please try again.</p>";
+            }
+        }
+
+        
+        // Function to load user profile from Firestore
+        async function loadUserProfile(uid) {
+            const userDocRef = doc(db, 'users', uid);
+            try {
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    // Update the UI with user data
+                    const userName = userData.name || "Pengguna";
+                    document.getElementById("profile-name").innerText = userName;
+                    document.getElementById("profile-email").innerText = auth.currentUser.email; // Get email from auth object
+                    document.getElementById("profile-picture").src = userData.profilePicture || "default-profile.png";
+                    document.getElementById("display-house").innerText = userData.house || "Tiada";
+                    document.getElementById("display-position").innerText = userData.position || "Tiada";
+                    document.getElementById("display-class").innerText = userData.class || "Tiada";
+
+                    // Update the "Selamat Datang" header
+                    document.getElementById("header-profile-name").innerText = userName;
+
+                    // Load the user's media
+                    await loadUserMedia(uid); // Load media using the user's UID
+                } else {
+                    console.error("No such document!");
+                    alert("User profile not found. Please create a profile.");
+                }
+            } catch (error) {
+                console.error("Error loading user profile:", error);
+            }
+        }
+
+        window.postComment = async function() {
+            const commentInput = document.getElementById('commentInput');
+            const commentText = commentInput.value;
+
+            const user = auth.currentUser; // Get the current user
+            if (!user) {
+                alert("You must be logged in to post a comment.");
+                return;
+            }
+
+            try {
+                // Fetch user's full name from Firestore
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+                const username = userDoc.exists() ? userDoc.data().name : 'Unknown User'; // Get the user's full name
+
+                if (!commentText) {
+                    alert("Please enter a comment.");
+                    return;
+                }
+
+                // Add comment to Firestore with userId
+                await addDoc(collection(db, 'comments'), {
+                    text: commentText,
+                    username: username,
+                    userId: user.uid, // Store user ID
+                    createdAt: serverTimestamp() // Add a timestamp
+                });
+                console.log("Comment posted:", commentText);
+                commentInput.value = ''; // Clear the input field
+                loadComments(); // Reload comments after posting
+            } catch (error) {
+                console.error("Error posting comment:", error);
+            }
+        };
+
+        
+
+        // Function to load comments
+        window.loadComments = async function() {
+            console.log("Loading comments...");
+
+            const commentsContainer = document.getElementById('commentsContainer');
+            commentsContainer.innerHTML = ''; // Clear previous comments
+
+            const user = auth.currentUser; // Get the current user
+
+            try {
+                // Fetch comments from Firestore, ordered by 'createdAt' field
+                const commentsQuery = query(collection(db, 'comments'), orderBy('createdAt', 'asc')); // Change 'desc' to 'asc' for oldest to newest
+                const querySnapshot = await getDocs(commentsQuery);
+
+                querySnapshot.forEach(doc => {
+                    const commentData = doc.data();
+                    const commentId = doc.id; // Get the comment ID
+                    const commentElement = document.createElement('div');
+                    commentElement.classList.add('comment');
+
+                    // Create comment content
+                    commentElement.innerHTML = `
+                        <span class="username">${commentData.username}</span>: ${commentData.text}
+                        <div class="timestamp">${new Date(commentData.createdAt.seconds * 1000).toLocaleString()}</div>
+                    `;
+
+                    // Only show delete button for the user who posted the comment
+                    if (user && user.uid === commentData.userId) {
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.innerText = 'Delete';
+                        deleteBtn.onclick = () => deleteComment(commentId); // Call deleteComment with comment ID
+                        commentElement.appendChild(deleteBtn);
+                    }
+
+                    commentsContainer.appendChild(commentElement);
+                });
+            } catch (error) {
+                console.error("Error loading comments:", error);
+            }
+        };
+
+        async function deleteComment(commentId) {
+            const confirmDelete = confirm("Are you sure you want to delete this comment?");
+            if (!confirmDelete) return; // Exit if user cancels
+
+            try {
+                const commentRef = doc(db, 'comments', commentId);
+                await deleteDoc(commentRef); // Delete the comment from Firestore
+                console.log("Comment deleted:", commentId);
+                loadComments(); // Reload comments after deletion
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+                alert("Failed to delete comment. Please try again.");
+            }
+        }
+
+        // Load comments when the document is ready
+        document.addEventListener("DOMContentLoaded", function() {
+            loadComments();
+        });
+        window.showSection = function(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        };
+
+        // Upload media to Firestore
+        async function uploadMedia(event) {
+            event.preventDefault();
+            console.log("Upload media function triggered"); // Add this line
+
+            const mediaUrl = document.getElementById('media-url').value.trim();
+            const mediaCaption = document.getElementById('media-caption').value.trim();
+
+            if (!mediaUrl) {
+                alert("Please enter a valid URL.");
+                return;
+            }
+
+            const userRef = doc(db, 'users', auth.currentUser.uid);
+            try {
+                await updateDoc(userRef, {
+                    media: arrayUnion({ url: mediaUrl, caption: mediaCaption })
+                });
+                console.log("Media uploaded successfully");
+                loadUserMedia(auth.currentUser.uid);
+                document.getElementById('media-url').value = '';
+                document.getElementById('media-caption').value = '';
+            } catch (error) {
+                console.error("Error uploading media: ", error);
+                alert("Failed to upload media. Please try again.");
+            }
+        }
+            
+        async function loadUserMedia(uid) {
+            const userDocRef = doc(db, 'users', uid);
+            
+            try {
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const mediaList = userData.media || []; // Get the user's media array, defaulting to empty if none
+
+                    const mediaListContainer = document.getElementById('media-list');
+                    mediaListContainer.innerHTML = ''; // Clear previous media list
+                    
+                    // Loop through each media item and display it
+                    mediaList.forEach((mediaItem, index) => {
+                        const mediaElement = document.createElement('li');
+
+                        let embedUrl = mediaItem.url;
+                        if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be')) {
+                            embedUrl = embedUrl.includes('watch?v=') ? embedUrl.replace('watch?v=', 'embed/') : embedUrl;
+                            mediaElement.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                        } else {
+                            mediaElement.innerHTML = `<a href="${embedUrl}" target="_blank">${mediaItem.url}</a>`;
+                        }
+
+                        // Display caption if available
+                        if (mediaItem.caption) {
+                            const captionElement = document.createElement('p');
+                            captionElement.className = 'media-caption';
+                            captionElement.innerText = mediaItem.caption;
+                            mediaElement.appendChild(captionElement);
+                        }
+
+                        // If the logged-in user is viewing their own media, allow them to delete it
+                        if (auth.currentUser.uid === uid) {
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.className = 'delete-btn';
+                            deleteBtn.innerText = 'Delete';
+                            deleteBtn.onclick = () => deleteMedia(index, uid); // Call the delete function with the media index
+                            mediaElement.appendChild(deleteBtn);
+                        }
+
+                        // Append the media element to the media list container
+                        mediaListContainer.appendChild(mediaElement);
+                    });
+                } else {
+                    console.error("No such document!");
+                    alert("User profile not found.");
+                }
+            } catch (error) {
+                console.error("Error loading media:", error);
+            }
+        }
+        async function fetchCommentsFromDatabase() {
+            try {
+                const commentsRef = collection(db, 'comments'); // Corrected line
+                const snapshot = await getDocs(commentsRef); // Use getDocs instead of get
+                const comments = snapshot.docs.map(doc => doc.data());
+                return comments; // Returns an array of comments
+            } catch (error) {
+                console.error("Error fetching comments:", error);
+                throw error; // Rethrow the error if needed
+            }
+        }
+
+        
+// Load comments when the page is loaded
+    </script>
+</head>
+
+<body>
+    
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+
+        <section class="hero">
+            <div class="search-bar">
+                <input type="text" id="search-input" oninput="searchUsers()" placeholder="Cari pengguna dengan nama atau username...">
+            </div>
+            <div id="results"></div>
+            <section class="texback">
+                <h2>Selamat Datang, <span id="header-profile-name">User</span></h2>
+                <p>Anda telah berjaya log masuk!</p>
+                
+            </section>
+            
+
+            <ul class="category-nav">
+                <li><a href="#" class="active" onclick="showSection('profile')">Maklumat Diri</a></li>
+                <li><a href="#" onclick="showSection('media')">Media</a></li>
+                <li><a href="#" onclick="showSection('community')">Ruang Komuniti</a></li>
+            </ul>
+
+        <!-- Profile Section -->
+        <div id="profile" class="content-section active">
+            <h2>Maklumat Diri</h2>
+            <div class="profile-info">
+                <a href="profile.html"><img id="profile-picture" src="default-profile.png" alt="Profile Picture" class="profile-pic"></a>
+                <p><strong>Nama Penuh:</strong> <span id="profile-name"></span></p>
+                <p><strong>Emel:</strong> <span id="profile-email">Tiada</span></p>
+                <p><strong>Kelas:</strong> <span id="display-class">Tiada</span></p>
+                <p><strong>Rumah Sukan:</strong> <span id="display-house">Tiada</span></p>
+                <p><strong>Jawatan:</strong> <span id="display-position">Tiada</span></p>
+            </div>
+        </div>
+
+        <!-- Media Section -->
+        <div id="media" class="content-section">
+
+
+            <section class="media-section">
+                <h3>Upload Your Media</h3>
+                <form class="media-upload-form" id="media-upload-form">
+                    <input type="url" id="media-url" placeholder="Enter media URL (e.g., YouTube)" required>
+                    <input type="text" id="media-caption" placeholder="Enter caption (optional)">
+                    <button type="submit">Upload</button>
+                </form>
+                <h3>My Uploaded Media</h3>
+                <ul id="media-list" class="media-list"></ul>
+            </section>
+        </div>
+        
+        <div id="community" class="content-section">
+            <h2>Ruang Komuniti</h2>
+            <div id="commentsContainer">
+            </div>
+            <textarea id="commentInput" placeholder="Tinggalkan komen..."></textarea>
+            <button onclick="postComment()">Post Comment</button>
+        </div>
+            
+        
+
+        
+
+        <!-- Search Bar for User Dashboards -->
+        
+        <!-- Useful Links Section -->
+        
+    </section>
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 SAKTI Website. SAKTI Menerajui.</p>
+    </footer>
+</body>
+
+</html>

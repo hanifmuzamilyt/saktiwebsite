@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Masuk</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+            authDomain: "sakti-web-app-2024.firebaseapp.com",
+            projectId: "sakti-web-app-2024",
+            storageBucket: "sakti-web-app-2024.appspot.com",
+            messagingSenderId: "623914117271",
+            appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.addEventListener("load", async () => {
+            try {
+                await signOut(auth);
+                console.log("User signed out by default.");
+            } catch (error) {
+                console.error("Error signing out:", error);
+            }
+
+            // Attach event listener for login
+            const loginForm = document.getElementById("login-form");
+            if (loginForm) {
+                loginForm.addEventListener("submit", handleLogin);
+            }
+        });
+
+        // Function to handle login
+        async function handleLogin(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                // Try logging in with Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Login successful
+                alert("Login successful!");
+                console.log(`Logged in with: ${userCredential.user.email}`);
+                
+                // Redirect to dashboard page
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error("Error logging in:", error);
+                alert("Login failed. Please try again.");
+            }
+        }
+        window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+            
+        };
+
+        // Attach event listener to form on window load
+        window.addEventListener("load", () => {
+            const loginForm = document.getElementById("login-form");
+            if (loginForm) {
+                loginForm.addEventListener("submit", handleLogin);
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <section class="texback">
+            <h2>Login to Your Account</h2>
+            <!-- Ensure the form has the correct ID -->
+            <form id="login-form" class="login-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Kata Laluan:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <p>Don't have an account? <a href="signup.html">Create an account</a>.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>        
+    </footer>
+</body>
+</html>

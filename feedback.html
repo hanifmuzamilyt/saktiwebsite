@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - SAKTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Reuse button, logo, and content styling from your main page */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: whitesmoke;
+            color: black;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        /* Center content and add padding */
+        .content {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        .container {
+            width: 40%;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 18px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Form styling */
+        .feedback-form {
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 30px; /* Increased padding for a more spacious look */
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd; /* Added border */
+        }
+
+        .feedback-form h2 {
+            margin-bottom: 20px;
+            font-size: 28px; /* Increased font size for better visibility */
+            color: #333; /* Darker color for better contrast */
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            resize: vertical; /* Allow vertical resizing */
+            transition: border-color 0.3s ease; /* Transition for border color */
+        }
+
+        .feedback-form textarea:focus {
+            border-color: #007bff; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .feedback-form input[type="text"],
+        .feedback-form input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: border-color 0.3s ease; /* Transition for border color */
+        }
+
+        .feedback-form input[type="text"]:focus,
+        .feedback-form input[type="email"]:focus {
+            border-color: #333; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .feedback-form button {
+            background-color: #333; /* Button background color */
+            color: white; /* Button text color */
+            padding: 12px 20px; /* Button padding */
+            font-size: 16px; /* Button font size */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Round corners */
+            cursor: pointer; /* Change cursor on hover */
+            transition: background-color 0.3s ease; /* Transition for background color */
+        }
+
+        .feedback-form button:hover {
+            background-color: #555; /* Darker shade on hover */
+        }
+        
+        .texback {
+                background-color: rgba(0, 0, 0, 0.6);
+                padding: 35px;
+                border-radius: 10px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                display: inline-block;
+                margin-top: 5%;
+                width: 50%;
+            }
+
+            .texback h2 {
+                font-size: 40px;
+                color: #ffffff;
+                margin-bottom: 10px;
+            }
+
+            .texback p {
+                font-size: 18px;
+                color: #dddddd;
+            }
+
+    </style>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase App (the core Firebase SDK)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+            authDomain: "sakti-web-app-2024.firebaseapp.com",
+            projectId: "sakti-web-app-2024",
+            storageBucket: "sakti-web-app-2024.appspot.com",
+            messagingSenderId: "623914117271",
+            appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Function to submit feedback
+        const feedbackForm = document.getElementById("feedback-form");
+        const feedbackText = document.getElementById("feedback").value;
+
+        onAuthStateChanged(auth, async (user) => {
+            const feedbackForm = document.getElementById("feedback-form");
+            
+            feedbackForm.addEventListener("submit", async (e) => {
+                e.preventDefault();  // Prevent the default form submission
+
+                // Get form values
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const feedback = document.getElementById("feedback").value;
+
+                if (!user) {
+                    // User is not authenticated
+                    alert("You must be logged in to submit feedback.");
+                    window.location.href = "/login"; // Redirect to the login page if necessary
+                    return;
+                }
+
+                try {
+                    // Add feedback to Firestore
+                    await addDoc(collection(db, "feedback"), {
+                        name: name,
+                        email: email,
+                        feedback: feedback,
+                        userId: user.uid, // Store user ID with feedback
+                        timestamp: serverTimestamp() // Automatically generate a timestamp
+                    });
+
+                    // Show success alert
+                    alert("Feedback submitted successfully!");
+
+                    // Optionally, clear the form fields
+                    feedbackForm.reset();
+
+                } catch (error) {
+                    // Log and show error alert
+                    console.error("Error adding feedback: ", error);
+                    alert("There was an error submitting your feedback. Please try again.");
+                }
+            });
+        });
+
+    // Listen for form submission
+
+    window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+        };
+    
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<!-- Feedback Form Section -->
+<section class="hero">
+    <section class="texback">
+        <h2>Maklum Balas Anda</h2>
+        <p>Kami menghargai pandangan dan cadangan anda.</p>
+    </section>
+    
+    <section class="container">
+        <form id="feedback-form" class="feedback-form"> <!-- Added class for styling -->
+            <input type="text" id="name" placeholder="Nama Anda" required />
+            <input type="email" id="email" placeholder="Emel Anda" required />
+            <textarea id="feedback" placeholder="Maklum Balas Anda" required></textarea>
+            <button type="submit">Hantar Maklum Balas</button>
+        </form>
+    </section>
+</section>
+
+
+
+<footer>
+    <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>
+</footer>
+
+</body>
+</html>

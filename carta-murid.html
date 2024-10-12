@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: whitesmoke;
+            color: black;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .container{
+            justify-content: center;
+            padding-left: 15%;
+            width: 85%;
+        }
+        .btn:hover {
+            background-color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        /* Center content and add padding */
+        .content {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        /* Big logo styling */
+        .big-logo {
+            display: block;
+            margin: 30px auto;
+            max-width: 200px;
+            height: auto;
+        }
+
+            * {
+                padding: 0px;
+                margin: 0px;
+                box-sizing: border-box;
+            }
+            body {
+                height: 100vh;
+                display: grid;
+                align-items: center;
+                font-family: 'Poppins', sans-serif;
+            }
+            .tree {
+                width: 100%;
+                height: auto;
+                text-align: center;
+                background-color: white;
+            }
+            .tree ul {
+                padding-top: 20px;
+                position: relative;
+                transition: .5s;
+            }
+            .tree li {
+                display: inline-table;
+                text-align: center;
+                list-style-type: none;
+                position: relative;
+                padding: 10px;
+                transition: .5s;
+            }
+            .tree li::before, .tree li::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 50%;
+                border-top: 1px solid #ccc;
+                width: 51%;
+                height: 10px;
+            }
+            .tree li::after {
+                right: auto;
+                left: 50%;
+                border-left: 1px solid #ccc;
+            }
+            .tree li:only-child::after, .tree li:only-child::before {
+                display: none;
+            }
+            .tree li:only-child {
+                padding-top: 0;
+            }
+            .tree li:first-child::before, .tree li:last-child::after {
+                border: 0 none;
+            }
+            .tree li:last-child::before {
+                border-right: 1px solid #ccc;
+                border-radius: 0 5px 0 0;
+                -webkit-border-radius: 0 5px 0 0;
+                -moz-border-radius: 0 5px 0 0;
+            }
+            .tree li:first-child::after {
+                border-radius: 5px 0 0 0;
+                -webkit-border-radius: 5px 0 0 0;
+                -moz-border-radius: 5px 0 0 0;
+            }
+            .tree ul ul::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                border-left: 1px solid #ccc;
+                width: 0;
+                height: 20px;
+            }
+            .tree li a {
+                border: 1px solid #ccc;
+                padding: 10px;
+                display: inline-grid;
+                border-radius: 5px;
+                text-decoration-line: none;
+                border-radius: 5px;
+                transition: .5s;
+                width: 150px;
+            }
+            .tree li a img {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 10px !important;
+                border-radius: 100px;
+                margin: auto;
+            }
+            .tree li a span {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                color: #666;
+                padding: 8px;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: 500;
+            }
+            /*Hover-Section*/
+            .tree li a:hover, .tree li a:hover i, .tree li a:hover span, .tree li a:hover+ul li a {
+                background: #c8e4f8;
+                color: #000;
+                border: 1px solid #94a0b4;
+            }
+            .tree li a:hover+ul li::after, .tree li a:hover+ul li::before, .tree li a:hover+ul::before, .tree li a:hover+ul ul::before {
+                border-color: #94a0b4;
+            }
+
+            .texback {
+                background-color: rgba(0, 0, 0, 0.6);
+                padding: 35px;
+                border-radius: 10px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                display: inline-block;
+                margin-top: 20px;
+                width: 50%;
+            }
+
+            .texback h2 {
+                font-size: 40px;
+                color: #ffffff;
+                margin-bottom: 10px;
+            }
+
+            .texback p {
+                font-size: 18px;
+                color: #dddddd;
+            }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Big Logo Section -->
+    <section class="hero">
+        <img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Big Logo" class="big-logo">
+        <section class="texback">
+            <h2>Carta BKM</h2>  
+            <p>Perubahan akan dibuat dari semasa ke semasa.</p>      
+        </section>
+        <div class="container">
+			<div class="row">
+				<div class="tree">
+					<ul>
+						<li> <a><span>Presiden</span><span>Asyraaf Elman bin Akmal Hijaz</span></a>
+						<ul>
+							<li><a><span>Timbalan Presiden</span><span>Siti Noor Aisyah binti Mohd Hairunizam</span></a>
+							<ul>
+								<li> <a><span>Master Maher</span></a> <ul>
+                                    <li> <a><span>Timbalan Master Maher</span></a></li>
+                                </ul> </li>
+								<li> <a><span>Master Majasti</span><span>Muhammad Nabil Imran bin Mohd Halid</span></a> <ul>
+                                    <li> <a><span>Timbalan Master Majasti</span><span>Syamimi Izhani binti Musa</span></a></li>
+                                </ul> </li>
+                                <li> <a><span>Master Masiru</span><span>Qutb Zharif bin</span></a> <ul>
+                                    <li> <a><span>Timbalan Master Masiru</span><span>Huda Najihah binti</span></a></li>
+                                </ul> </li>                                
+                                <li> <a><span>Master Badar</span></a> <ul>
+                                    <li> <a><span>Timbalan Master badar</span></a></li>
+                                </ul> </li>                                
+                                <li> <a><span>Presiden PRS</span><span>Ahmad Ahza Hariz bin Ahmad AbdulHaq</span></a> 
+                                    <ul>
+                                    <li><a><span>Timbalan Presiden PRS</span><span>Siti Noraisah binti Mohd Hamdan</span></a></li>
+                                    </ul> </li>                                
+                                <li> <a><span>Presiden Persakti</span><span>Irman Hilmi bin Mohd Farizal</span></a> <ul>
+                                    <li> <a><span>Timbalan Presiden Persakti</span><span>Siti Saarah Ruqayah binti Abd Razak</span></a></li>
+                                </ul> </li>							
+                            </ul>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+</div>
+    </section>
+
+    <!-- Content Section -->
+    <footer>
+        <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>
+    </footer>
+
+    
+</body>
+</html>

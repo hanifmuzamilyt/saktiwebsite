@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+                body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .texback {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin-top: 20px;
+            width: 39%;
+        }
+
+        .profile-info {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 15px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .texback h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .texback p {
+            font-size: 18px;
+            color: #dddddd;
+        }
+
+        .profile-info h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .profile-info strong {
+            color: #555;
+        }
+
+        .website-links {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 70px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .search-bar {
+            left: 50%;
+            max-width: 34%;
+            margin: 0px auto;
+            text-align: center;
+        }
+
+        #results {
+            position: absolute; /* Membuat hasil carian sebagai overlay */
+            top: 120px; /* Sesuaikan kedudukan mengikut keperluan */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white; /* Warna latar belakang untuk hasil carian */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan untuk overlay */
+            z-index: 1000; /* Pastikan hasil carian di atas elemen lain */
+            display: block;
+            flex-direction: column;
+            max-width: 500px; /* Lebar maksimum hasil carian */
+            width: 70%;
+            border-radius: 8px; /* Bulatkan sudut */
+            padding: 10px; /* Ruang dalam untuk hasil carian */
+            visibility: visible;
+            height: auto;
+            overflow: visible;
+            color:#333;
+        }
+
+        .user-card {
+            border: 1px solid #ccc; /* Garis keliling untuk kad pengguna */
+            padding: 10px; /* Ruang dalam untuk kad pengguna */
+            margin: 5px 0; /* Ruang antara kad pengguna */
+            border-radius: 4px; /* Bulatkan sudut kad pengguna */
+        }
+
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .user-card {
+            background: #fff;
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .user-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .user-card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .dashboard-link {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        footer {
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .category-nav {
+            display : flex;
+            align-self: center;
+            justify-content: center;
+            background-color: #343a40;
+            border-bottom: 3px solid #dee2e6;
+            width: 39%;
+            margin: 0 auto;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .category-nav li {
+            list-style: none;
+            padding: 15px 30px;
+            margin: 0;
+        }
+
+        .category-nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .category-nav a:hover,
+        .category-nav a.active {
+            background-color: #495057;
+        }
+
+        /* Content Section Styling */
+        .content-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            margin: 0px auto;
+            max-width: 39%;
+            border: 1px solid #ddd;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section.active h2 {
+            color:#333
+        }
+
+        /* Profile Section */
+        .profile-details {
+            margin: 20px 0;
+        }
+
+        .profile-details h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        
+
+        .media-section h3 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .media-upload-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .media-upload-form input {
+            width: 70%;
+            padding: 12px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .media-upload-form button {
+            padding: 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .media-upload-form button:hover {
+            background-color: #45a049;
+        }
+
+        .media-list {
+            list-style-type: none;
+            padding: 0;
+            color: #333;
+        }
+
+        .media-list li {
+            margin-bottom: 20px;
+            position: relative;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .media-list li:hover {
+            transform: scale(1.02);
+        }
+
+        .media-list iframe {
+            width: 100%;
+            height: 315px;
+            border-radius: 10px;
+        }
+
+
+        /* Add additional styles as necessary */
+
+    </style>
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+            authDomain: "sakti-web-app-2024.firebaseapp.com",
+            projectId: "sakti-web-app-2024",
+            storageBucket: "sakti-web-app-2024.appspot.com",
+            messagingSenderId: "623914117271",
+            appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+
+        async function loadUserDashboard() {
+            const params = new URLSearchParams(window.location.search);
+            const uid = params.get('user'); // Get the UID from the URL
+
+            if (!uid) {
+                console.log("No user specified in URL."); 
+                window.location.href = "dashboard.html"; 
+                return;
+            }
+
+            try {
+                console.log("Loading profile for UID:", uid);
+
+                // Use the UID to fetch the user document
+                const userDocRef = doc(db, 'users', uid);
+                console.log("Document reference path:", userDocRef.path); // Debug the path
+
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    console.log("User data retrieved successfully:", userData);
+
+                    document.getElementById("profile-name").innerText = userData.name || "No Name Available";
+                    document.getElementById("profile-username").innerText = userData.username;
+                    document.getElementById("display-class").innerText = userData.class || "No Class Available";
+                    document.getElementById("display-house").innerText = userData.house || "No House Assigned";
+                    document.getElementById("display-position").innerText = userData.position || "No Position Available";
+                    document.getElementById("profile-picture").src = userData.profilePicture || "images/default-profile.png";
+
+                    // Load user's media using UID
+                    await loadUserMedia(uid); // Pass UID here
+                } else {
+                    console.log("User document not found for UID:", uid);
+                    alert("User data not found. Please check the URL or username.");
+                    window.location.href = "dashboard.html"; 
+                }
+            } catch (error) {
+                console.error("Error loading user profile:", error.message);
+                alert("Failed to load user profile due to permissions. Please check your Firestore rules.");
+                window.location.href = "dashboard.html";
+            }
+        }
+
+        window.showSection = function(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        };
+
+        async function searchUsers() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (input.length === 0) return;
+
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('username', '>=', input), where('username', '<=', input + '\uf8ff'));
+
+            try {
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    resultsDiv.innerHTML = "<p>No results found.</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const user = doc.data();
+                    const uid = doc.id; // Get the UID from the document ID
+
+                    // Create the user card element
+                    const userElement = document.createElement('div');
+                    userElement.className = 'user-card';
+
+                    userElement.innerHTML = `
+                        <div class="user-details">
+                            <h3>${user.name || 'No Name Available'}</h3>
+                            <p>Username: ${user.username || 'N/A'}</p>
+                            <p>Class: ${user.class || 'N/A'}</p>
+                            <p>House: ${user.house || 'N/A'}</p>
+                            <p>Position: ${user.position || 'N/A'}</p>
+                            <button class="dashboard-link" onclick="window.location.href='user_dashboard.html?user=${uid}'">View Dashboard</button>
+                        </div>
+                    `;
+
+                    resultsDiv.appendChild(userElement);
+                });
+            } catch (error) {
+                console.error("Error searching users: ", error);
+                alert("Error searching users. Please check the console for more details.");
+                resultsDiv.innerHTML = "<p>Error retrieving results. Please try again.</p>";
+            }
+        }
+
+        // Function to load user's media files
+        async function loadUserMedia(uid) { // Accept uid as parameter
+            const mediaListContainer = document.getElementById('media-list');
+            if (!mediaListContainer) return; // Ensure the container exists
+            mediaListContainer.innerHTML = ''; // Clear existing media
+
+            try {
+                // Retrieve user data from Firestore using UID
+                const userDocRef = doc(db, 'users', uid); // Use uid here
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const mediaList = userData.media || [];
+
+                    // Display each media item for this user
+                    mediaList.forEach(mediaItem => {
+                        const mediaElement = document.createElement('li');
+
+                        // Convert to embed URL if the URL is a YouTube link
+                        let embedUrl = '';
+                        if (mediaItem.url.includes('youtube.com/watch?v=')) {
+                            embedUrl = mediaItem.url.replace('watch?v=', 'embed/');
+                        } else if (mediaItem.url.includes('youtu.be/')) {
+                            embedUrl = mediaItem.url.replace('youtu.be/', 'www.youtube.com/embed/');
+                        } else {
+                            embedUrl = mediaItem.url; // Leave as is if it's not a YouTube link
+                        }
+
+                        // Add media content based on URL type
+                        if (embedUrl.includes('youtube.com/embed/')) {
+                            mediaElement.innerHTML = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                        } else {
+                            mediaElement.innerHTML = `<a href="${embedUrl}" target="_blank">${mediaItem.url}</a>`;
+                        }
+
+                        // Display the caption if it exists
+                        if (mediaItem.caption) {
+                            const captionElement = document.createElement('p');
+                            captionElement.className = 'media-caption';
+                            captionElement.innerText = mediaItem.caption;
+                            mediaElement.appendChild(captionElement);
+                        }
+
+                        mediaListContainer.appendChild(mediaElement);
+                    });
+                } else {
+                    console.error("User media not found for this UID.");
+                }
+            } catch (error) {
+                console.error("Error loading media:", error);
+            }
+        }
+
+        // Call loadUserDashboard when the page is fully loaded
+        window.onload = loadUserDashboard;
+    </script>
+    <script type="module">
+        window.toggleNavPane = function () {
+                const sidebar = document.getElementById('sidebarz');
+    
+                // Toggle the 'active' class to open/close the sidebar
+                sidebar.classList.toggle('active');
+    
+                // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+                
+            };
+        </script>
+</head>
+
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Cari pengguna dengan nama atau username..." oninput="searchUsers()">
+        </div>
+
+        <div id="results"></div>
+        <h1 class="texback">User Dashboard</h1>
+        <ul class="category-nav">
+            <li><a href="#" class="active" onclick="showSection('profile')">Maklumat Diri</a></li>
+            <li><a href="#" onclick="showSection('media')">Media</a></li>
+        </ul>
+        <div id="profile" class="content-section active">
+            <h2>Maklumat Diri</h2>
+            <div class="profile-info">
+                <a><img id="profile-picture" src="default-profile.png" alt="Profile Picture" class="profile-pic"></a>
+                <p><strong>Nama Penuh:</strong> <span id="profile-name"></span></p>
+                <p><strong>Emel:</strong> <span id="profile-username"></span></p>
+                <p><strong>Kelas:</strong> <span id="display-class">Tiada</span></p>
+                <p><strong>Rumah Sukan:</strong> <span id="display-house">Tiada</span></p>
+                <p><strong>Jawatan:</strong> <span id="display-position">Tiada</span></p>
+            </div>
+        </div>
+
+        <div id="media" class="content-section">
+
+
+            <section class="media-section">
+                <h3>Uploaded Media</h3>
+                <ul id="media-list" class="media-list"></ul>
+            </section>
+        </div>
+    </div>
+
+    
+
+    <footer>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

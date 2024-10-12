@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang SAKTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+/* Basic styling for the page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+    height: 35px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero {
+    background-color: #e9ecef;
+    padding: 50px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.sidebar h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Arrange items side by side */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.sidebar ul li {
+    margin-right: 8px; /* Space between items */
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    display: block;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: #575757;
+    color: #fff;
+}
+
+.sidebar ul li a:focus {
+    background-color: #313131;
+    color: #fff;
+}
+
+.category-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-section {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.category-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.category-section p {
+    color: #666;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    margin-top: 20px;
+    border-top: 2px solid #ccc;
+}
+
+.content h3 {
+    font-size: 32px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.pencapaian-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.pencapaian-table th, .pencapaian-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.pencapaian-table th {
+    background-color: #1f1f1f;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+.pencapaian-table td {
+    font-size: 16px;
+    color: black;
+    text-align: center;
+}
+
+.pencapaian-table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pencapaian-table a:hover {
+    text-decoration: underline;
+}
+
+.category-headline {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pencapaian-headline {
+    text-align: center;
+    font-size: 28px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.slider {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slide img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    max-height: 400px;
+}
+
+.slide h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.slide p {
+    font-size: 18px;
+    color: #666;
+    padding: 15px;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 18px;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+.text-slider {
+    width: 100%;
+    overflow: hidden;
+}
+
+.text-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.text-slides .slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <section class="texback">
+            <h1>Tentang SAKTI</h1>
+            <p>Info-info berkenaan Sekolah Menengah Sains Kota Tinggi.</p> 
+        </section>
+        <section class="content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul>
+                    <li><a href="#" data-category="pencapaian">Sejarah</a></li>
+                    <li><a href="#" data-category="berita-terkini">Bendera</a></li>
+                    <li><a href="#" data-category="takwim-pertandingan">Lencana</a></li>
+                    <li><a href="#" data-category="daftar-pertandingan">Lagu</a></li>
+                    <li><a href="#" data-category="aktiviti-kokurikulum">Pemandangan</a></li>
+                </ul>
+            </aside>
+            <div class="headlines">
+                <h3 id="headline-pencapaian" class="category-headline" style="display: block;">Sejarah SAKTI</h3>
+                <h3 id="headline-berita-terkini" class="category-headline" style="display: none;">Bendera SAKTI</h3>
+                <h3 id="headline-takwim-pertandingan" class="category-headline" style="display: none;">Lencana SAKTI</h3>
+                <h3 id="headline-daftar-pertandingan" class="category-headline" style="display: none;">Lagu SAKTI</h3>
+                <h3 id="headline-aktiviti-kokurikulum" class="category-headline" style="display: none;">Pemandangan SAKTI</h3>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider">
+                    <div class="slides" id="pencapaian">
+                        <div class="slide">
+                            <img src="https://www.sakti.edu.my/images/2015/panorama/aarasudara.jpg" style="border: solid #666 5px;" alt="Daftar Pertandingan 2 Image">
+                            <h2>Sejarah SAKTI</h2>
+                            <p>Sekolah Menengah Sains Kota Tinggi (SAKTI), merupakan ahli keluarga Sekolah Berasrama Penuh (SBP) yang ke-34. Terletak di atas satu kawasan seluas 50 ekar, kira-kira 50 kilometer dari bandar Kota Tinggi menghala ke pusat pelancongan Desaru dan 90 km dari Johor Bahru.</p>                                                
+                            <p>Kerja-kerja untuk pengukuran tapak sekolah telah dimulakan pada bulan Februari 1994. Pada bulan Mac tahun yang sama kerja-kerja meratakan tapak telah dijalankan.  Pada bulan Mei 1994 dimulakan kerja-kerja membina bangunan. Bangunan yang mula-mula didirikan ialah empat blok asrama empat tingkat setiap satu. Dua blok untuk Asrama Putera dan dua blok untuk Asrama Puteri, kemudian diikuti pula dengan pembinaan dewan makan, surau, blok pentadbiran dan akademik, dewan, rumah kediaman dan sebagainya.</p>
+                            <p>Keseluruhan projek telah dapat disiapkan pada bulan Julai 1996. Kerja-kerja pembinaan mengambil masa dua tahun dua bulan. Majlis penyerahan Bangunan SAKTI kepada Kementerian Pelajaran Malaysia melalui Jabatan Pelajaran Johor oleh JKR KEJORA telah dilangsungkan pada Ogos 1996. Kumpulan pertama pelajar tingkatan satu seramai 179 orang telah melapor diri pada 12 Ogos 1996.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slides" id="berita-terkini">
+                        <div class="slide">
+                            <img src="https://www.sakti.edu.my/images/design_WEB/BENDERA.png" alt="Bendera SAKTI">
+                            <h2>Ciptaan: En Mazlan A. Karim</h2>
+                            <!-- Keep the image fixed -->
+                            <div class="text-slider">
+                                <!-- Add a new text slide container -->
+                                <div class="text-slides">
+                                    <!-- First Text Slide -->
+                                    <div class="slide">
+                                        <h2>Warna Biru dan Putih</h2>
+                                        <p><strong>Empat warna biru dan putih</strong> yang mewakili warga SAKTI yang mendukung Empat Falsafah Pendidikan Kebangsaan iaitu sentiasa berusaha dengan penuh dedikasi dalam menyampaikan amanah ilmu secara menyeluruh dari segi jasmani, emosi, rohani, dan intelek (JERI).</p>
+                                    </div>
+                                    <!-- Second Text Slide -->
+                                    <div class="slide">
+                                        <h2>Warna Kuning</h2>
+                                        <p><strong>Warna kuning</strong> yang menjadi latar logo sekolah melambangkan semangat patriotisme dan kesetiaan kepada raja, perlembagaan dan negara Malaysia.</p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slides" id="takwim-pertandingan">
+                        <div class="slide">
+                            
+                            <!-- Keep the image fixed -->
+                            <img src="images/sakti.png" class="" alt="Bendera SAKTI">
+                            <h2>Grafik: En Mazlan A. Karim</h2>
+                            <div class="text-slider">
+                                <!-- Add a new text slide container -->
+                                <div class="text-slides">
+                                    <!-- First Text Slide -->
+                                    <div class="slide">
+                                        <h2>Huruf "SMS"</h2>
+                                        <p>Digubah dalam bentuk kelalang, merupakan identiti SAKTI</p>
+                                        <p><strong>Warna merah</strong> yang digunakan menunjukkan bahawa warga SAKTI terdiri daripada warga sekolah yang berani, proaktif, berketerampilan dan cemerlang dari segi sahsiah dan akademik berteraskan sains dan teknologi.</p>
+                                    </div>
+                                    <!-- Second Text Slide -->
+                                    <div class="slide">
+                                        <h2>Gabungan Buku, Roda Teknologi, Glob dan Mata Pena</h2>
+                                        <p><strong>Buku berwarna hijau dan putih</strong> menjadi dasar utama lencana yng menunjukkan bahwa proses menuntut ilmu sentiasa subur dan brkembang sejajar dengan kemurnian dan kemuliaan ilmu dalam kehidupan seseorang.</p>
+                                        <p><strong>Roda teknologi berwarna biru</strong> Mewakili warga pendidik SAKTI yang sentiasa berusaha dengan penuh dedikasi dalam menyampaikan amanah ilmu secara menyeluruh dari segi jasmani, emosi, rohani dan intelek serta prihatin terhadap rekayasa demi kecemerlangan pelajar sesuai dengan konsep guru umpama penyuluh yang memberi cahaya.</p>
+                                        <p><strong>Glob berwarna biru</strong> SAKTI menjadi wadah kepada sistem pendidikan bertaraf dunia dan ilmu yang diperolehi oleh setiap warga SAKTI dikembangbiakkan bagi faedah dan kepentingan manusia sejagat.</p>
+                                        <p><strong>Mata pena</strong> Menyalur maklumat yang terpenting dalam proses mencari dan memberi ilmu pengetahuan.</p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides" id="daftar-pertandingan" style="display: none;">
+                        <!-- Slides for Daftar Pertandingan -->
+                        <div class="slide">
+                            <iframe width="600" height="400" src="https://www.youtube.com/embed/iBhIJ4KgJi0" title="Lagu - SM Sains Kota Tinggi (SAKTI)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <h2>Lagu SAKTI (Video)</h2>
+                        </div>
+                        <div class="slide">
+                            <img src="https://www.sakti.edu.my/images/design_WEB/lagu.png" alt="Daftar Pertandingan 2 Image">
+                            <h2>Lagu SAKTI (Lirik)</h2>
+                        </div>
+
+                        <div class="slide">
+                            <iframe width="600" height="400" src="https://www.youtube.com/embed/C4rDRwFzBh4?si=BaWNWYMSZR5JRHpg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <h2>Lagu SAKTI (Lama)</h2>
+                        </div>
+                        <!-- Add more slides as needed -->
+                    </div>
+                    <div class="slides" id="aktiviti-kokurikulum" style="display: none;">
+                        <!-- Slides for Aktiviti Kokurikulum -->
+                        <div class="slide">
+                            <iframe width="700" height="394" src="https://www.youtube.com/embed/By0n65twuKM" title="Aerial Videography: SM Sains Kota Tinggi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <h2>Pemandangan di Sekitar SAKTI</h2>
+                        </div>
+                        
+                    </div>
+                        <!-- Add more slides as needed -->
+                    </div>
+                    <button class="prev">&#10094;</button>
+                    <button class="next">&#10095;</button>
+                </div>
+            </div>
+
+        </section>
+    </section>
+
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+
+    <footer>
+        <p>&copy; 2024 SAKTI. All rights reserved.</p>
+    </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slidesContainers = document.querySelectorAll('.slides');
+    let index = 0;
+    let textIndex = 0; // Track the text slider index for Bendera SAKTI
+    let currentCategory = 'pencapaian'; // Default category
+
+    const headlines = {
+        pencapaian: document.getElementById('headline-pencapaian'),
+        'berita-terkini': document.getElementById('headline-berita-terkini'),
+        'takwim-pertandingan': document.getElementById('headline-takwim-pertandingan'),
+        'daftar-pertandingan': document.getElementById('headline-daftar-pertandingan'),
+        'aktiviti-kokurikulum': document.getElementById('headline-aktiviti-kokurikulum')
+    };
+
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+
+    function getSlideCount() {
+        if (currentCategory === 'berita-terkini' || currentCategory === 'takwim-pertandingan') {
+            const textSlider = document.querySelector(`#${currentCategory} .text-slides`);
+            return textSlider.querySelectorAll('.slide').length;
+        } else {
+            const visibleSlides = document.querySelector(`#${currentCategory}`);
+            return visibleSlides.querySelectorAll('.slide').length;
+        }
+    }
+
+    function updateSlider() {
+        slidesContainers.forEach(slides => {
+            if (slides.id === currentCategory) {
+                slides.style.display = 'flex';
+                const offset = -index * 100;
+                slides.style.transform = `translateX(${offset}%)`;
+            } else {
+                slides.style.display = 'none';
+            }
+        });
+
+        // Handle text sliding for 'berita-terkini'
+        if (currentCategory === 'berita-terkini' || currentCategory === 'takwim-pertandingan') {
+            const textSlides = document.querySelector(`#${currentCategory} .text-slides`);
+            const textOffset = -textIndex * 100;
+            textSlides.style.transform = `translateX(${textOffset}%)`;
+        }
+
+        // Show the appropriate headline for the current category
+        Object.keys(headlines).forEach(category => {
+            headlines[category].style.display = category === currentCategory ? 'block' : 'none';
+        });
+
+        // Show or hide the prev and next buttons based on the category
+        if (currentCategory === 'pencapaian' || currentCategory === 'aktiviti-kokurikulum') {
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+        } else {
+            prevButton.style.display = 'block';
+            nextButton.style.display = 'block';
+        }
+    }
+
+    document.querySelector('.next').addEventListener('click', () => {
+        const slideCount = getSlideCount();
+        if (currentCategory === 'berita-terkini' || currentCategory === 'takwim-pertandingan') {
+            textIndex = (textIndex + 1) % slideCount;
+        } else {
+            index = (index + 1) % slideCount;
+        }
+        updateSlider();
+    });
+
+    document.querySelector('.prev').addEventListener('click', () => {
+        const slideCount = getSlideCount();
+        if (currentCategory === 'berita-terkini' || currentCategory === 'takwim-pertandingan') {
+            textIndex = (textIndex - 1 + slideCount) % slideCount;
+        } else {
+            index = (index - 1 + slideCount) % slideCount;
+        }
+        updateSlider();
+    });
+
+    // Category switching logic
+    document.querySelectorAll('.sidebar ul li a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category');
+            if (currentCategory !== category) {
+                currentCategory = category;
+                index = 0; // Reset to the first slide
+                textIndex = 0; // Reset the text slider index for Bendera SAKTI
+                updateSlider();
+            }
+        });
+    });
+
+    updateSlider(); // Initial call to display the default category
+});
+
+window.toggleNavPane = function () {
+    const sidebar = document.getElementById('sidebarz');
+
+    // Toggle the 'active' class to open/close the sidebar
+    sidebar.classList.toggle('active');
+
+    // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+    
+};
+    </script>
+</body>
+</html>

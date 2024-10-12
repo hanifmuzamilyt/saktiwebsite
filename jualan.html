@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKTI Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: whitesmoke;
+            color: black;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        /* Center content and add padding */
+        .content {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        /* Big logo styling */
+        .big-logo {
+            display: block;
+            margin: 30px auto;
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Product styling */
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+        }
+
+        .cart-counter {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        /* Cart section styling */
+        .cart-section {
+            display: none;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .cart-section h2 {
+            text-align: center;
+        }
+
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .cart-item button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .cart-pane {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: -4px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .cart-pane.active {
+            right: 0;
+        }
+
+        .cart-pane h2 {
+            margin-top: 0;
+        }
+
+        .cart-pane button {
+            background-color: #ff4040;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .cart-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+    </style>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+            authDomain: "sakti-web-app-2024.firebaseapp.com",
+            projectId: "sakti-web-app-2024",
+            storageBucket: "sakti-web-app-2024.appspot.com",
+            messagingSenderId: "623914117271",
+            appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth();
+
+        let userId = null;
+        window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+            
+        };
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                userId = user.uid;
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Add to Cart function
+        window.addToCart = async function (productId) {
+            if (!userId) return;
+
+            const cartRef = doc(db, "carts", userId);
+            const cartSnap = await getDoc(cartRef);
+
+            if (cartSnap.exists()) {
+                const cartData = cartSnap.data();
+                const currentQuantity = cartData[productId] || 0;
+                await updateDoc(cartRef, {
+                    [productId]: currentQuantity + 1
+                });
+            } else {
+                await setDoc(cartRef, {
+                    [productId]: 1
+                });
+            }
+
+            // Update cart count
+            updateCartCount();
+
+            // Automatically show the cart pane after adding an item
+            displayCart();
+        };
+
+        // Update Cart Count
+        window.updateCartCount = async function () {
+            if (!userId) return;
+
+            const cartRef = doc(db, "carts", userId);
+            const cartSnap = await getDoc(cartRef);
+            
+            let itemCount = 0;
+
+            if (cartSnap.exists()) {
+                const cartData = cartSnap.data();
+                for (const quantity of Object.values(cartData)) {
+                    itemCount += quantity;
+                }
+            }
+
+            document.getElementById('cart-count').textContent = itemCount;
+        };
+
+        // Display Cart Items
+        window.displayCart = async function () {
+            if (!userId) return;
+
+            const cartRef = doc(db, "carts", userId);
+            const cartSnap = await getDoc(cartRef);
+            const cartItemsContainer = document.getElementById('cart-items');
+            
+            // Clear previous items
+            cartItemsContainer.innerHTML = '';
+
+            if (cartSnap.exists()) {
+                const cartData = cartSnap.data();
+                for (const [productId, quantity] of Object.entries(cartData)) {
+                    const cartItem = document.createElement('li');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <span>Product ID: ${productId} (Qty: ${quantity})</span>
+                        <button onclick="removeFromCart('${productId}')">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                }
+            }
+
+            // Open the cart pane
+            document.getElementById('cart-pane').classList.add('active');
+        };
+
+        // Close cart pane function
+        window.closeCartPane = function () {
+            document.getElementById('cart-pane').classList.remove('active');
+        };
+
+        // Remove from Cart
+        window.removeFromCart = async function (productId) {
+            if (!userId) return;
+
+            const cartRef = doc(db, "carts", userId);
+            await updateDoc(cartRef, {
+                [productId]: deleteField()
+            });
+
+            updateCartCount();
+            displayCart();
+        };
+
+        // Initialize Cart Count on Page Load
+        window.addEventListener('load', updateCartCount);
+
+        
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+        <!-- Cart Icon (clickable) -->
+        <span class="cart-icon" onclick="displayCart()">
+            <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" style="width:30px;height:30px;">
+            <span id="cart-count">0</span> <!-- Cart item count -->
+        </span>
+    </nav>
+</header>
+
+<!-- Big Logo Section -->
+<section class="hero">
+    <img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Big Logo" class="big-logo">
+    <section class="texback">
+        <h1>Selamat Datang ke SAKTI Shop</h1>
+        <p>Jom membeli produk hebat dari kami.</p>
+    </section>
+</section>
+
+<!-- Product List Section -->
+<section class="content">
+    <h2>Produk Kami</h2>
+    <div class="product-list">
+        <div class="product">
+            <img src="https://via.placeholder.com/150" alt="Product 1">
+            <h3>Produk 1</h3>
+            <p>RM50.00</p>
+            <button class="btn" onclick="addToCart('test')">Tambah ke Troli</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/150" alt="Product 2">
+            <h3>Produk 2</h3>
+            <p>RM70.00</p>
+            <button class="btn" onclick="addToCart('product2')">Tambah ke Troli</button>
+        </div>
+    </div>
+    <div id="cart-pane" class="cart-pane">
+        <h2>Your Cart</h2>
+        <ul id="cart-items"></ul>
+        <button onclick="closeCartPane()">Close</button>
+    </div>
+</section>
+
+<!-- Cart Section -->
+<section class="cart-section" id="cart-section">
+    <h2>Troli Anda</h2>
+    <ul id="cart-items" class="cart-items"></ul>
+</section>
+
+<!-- Cart Counter -->
+<div class="cart-counter" id="cart-counter">0</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 SAKTI Shop. Hak Cipta Terpelihara.</p>
+</footer>
+</body>
+</html>

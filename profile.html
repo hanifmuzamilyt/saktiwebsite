@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetapan Profil</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Styling remains unchanged */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .texback {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin-top: 20px;
+            width: 80%;
+        }
+
+        .profile-info, .profile-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .profile-form {
+            display: none;
+            text-align: left;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 15px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .texback h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .profile-info h3, .profile-form h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .profile-info p, .profile-form label {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .profile-form input[type="file"], .profile-form input[type="text"], .profile-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+        }
+
+        .profile-info strong {
+            color: #555;
+        }
+
+        .profile-form button, .profile-info button {
+            display: block;
+            width: 100%;
+            background: #5cb85c;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .profile-form button:hover, .profile-info button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            // Your Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyApmDixki8K1IEf3YrIrrFTALSAll45ngg",
+                authDomain: "sakti-web-app-2024.firebaseapp.com",
+                projectId: "sakti-web-app-2024",
+                storageBucket: "sakti-web-app-2024.appspot.com",
+                messagingSenderId: "623914117271",
+                appId: "1:623914117271:web:174ad3145f9e36c37961d2"
+            };
+    
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+            const storage = getStorage(app);  // Initialize Firebase storage
+    
+            let currentUser;
+    
+            // Function to load user profile
+            async function loadProfile(uid) {
+                try {
+                    const docRef = doc(db, "users", uid);
+                    const userDoc = await getDoc(docRef);
+    
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        document.getElementById("profile-name").innerText = userData.name || 'Tiada';
+                        document.getElementById("profile-username").innerText = userData.username || 'Tiada';
+                        document.getElementById("profile-picture").src = userData.profilePicture || "default-profile.png";
+                        document.getElementById("display-class").innerText = userData.class || 'Tiada';
+                        document.getElementById("display-house").innerText = userData.house || 'Tiada';
+                        document.getElementById("display-position").innerText = userData.position || 'Tiada';
+                        
+                        // Pre-fill form fields for updating
+                        document.getElementById("profile-name").value = userData.name || '';   // Pre-fill the name input
+                        document.getElementById("profile-username").value = userData.username || '';   // Pre-fill the username (email)
+                        document.getElementById("profile-class").value = userData.class || '';
+                        document.getElementById("profile-house").value = userData.house || '';
+                        document.getElementById("profile-position").value = userData.position || '';
+                    }
+                } catch (error) {
+                    console.error("Error loading profile: ", error);
+                }
+            }
+            
+            window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+            
+        };
+            // Function to update profile
+            window.updateProfile = async function(event) {
+                event.preventDefault();  // Prevent form submission from reloading the page
+
+                const name = document.getElementById('profile-name').value.trim();
+                const username = document.getElementById('profile-username').value.trim();
+                const classValue = document.getElementById('profile-class').value.trim();
+                const house = document.getElementById('profile-house').value.trim();
+                const position = document.getElementById('profile-position').value.trim();
+                
+                // Check if the file input exists and has a file
+                const profilePictureInput = document.getElementById('profile-picture-input');
+                const profilePictureFile = profilePictureInput && profilePictureInput.files[0];  // Ensure the file input exists
+
+                if (!currentUser) {
+                    alert("No user is logged in.");
+                    return;
+                }
+
+                const userId = currentUser.uid;
+                let updatedData = {};
+
+                // Only add non-empty fields to the updatedData object
+                if (name) {
+                    updatedData.name = name;
+                }
+                if (username) {
+                    updatedData.username = username;
+                }
+                if (classValue) {
+                    updatedData.class = classValue;
+                }
+                if (house) {
+                    updatedData.house = house;
+                }
+                if (position) {
+                    updatedData.position = position;
+                }
+
+                // Check if there are any updates to make
+                if (Object.keys(updatedData).length === 0 && !profilePictureFile) {
+                    alert("No changes were made. Please fill in the fields to update.");
+                    return;
+                }
+
+                try {
+                    const docRef = doc(db, "users", userId);
+
+                    // Upload profile picture if a file is selected
+                    if (profilePictureFile) {
+                        const storageRef = ref(storage, `profilePictures/${userId}`);
+                        const uploadTask = uploadBytesResumable(storageRef, profilePictureFile);
+
+                        uploadTask.on('state_changed', 
+                            (snapshot) => {
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                console.log('Upload is ' + progress + '% done');
+                            }, 
+                            (error) => {
+                                console.error("Error uploading file:", error);
+                                alert("Failed to upload profile picture.");
+                            }, 
+                            async () => {
+                                // Get the download URL of the uploaded profile picture
+                                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                                updatedData.profilePicture = downloadURL;  // Store URL
+
+                                // Update Firestore with new profile picture URL and other fields
+                                await setDoc(docRef, updatedData, { merge: true });
+                                alert("Profile updated successfully!");
+                                window.location.href = "profile.html";  // Redirect to profile page
+                            }
+                        );
+                    } else {
+                        // Update Firestore with other fields if no profile picture is uploaded
+                        await setDoc(docRef, updatedData, { merge: true });
+                        alert("Profile updated successfully!");
+                        window.location.href = "profile.html";  // Redirect to profile page
+                    }
+                } catch (error) {
+                    console.error("Error updating profile: ", error);
+                    alert("Failed to update profile.");
+                }
+            };
+
+
+            // Ensure the form submission calls updateProfile
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("update-form").addEventListener("submit", updateProfile);
+            });
+    
+            // Toggle form visibility (optional)
+            window.toggleForm = function () {
+                const formSection = document.getElementById("update-form");
+                if (formSection.style.display === "none") {
+                    formSection.style.display = "block";
+                } else {
+                    formSection.style.display = "none";
+                }
+            };
+    
+            // Load profile data on auth state change
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    currentUser = user;
+                    loadProfile(user.uid);  // Load profile based on user ID
+                } else {
+                    window.location.href = "login.html";  // Redirect to login if not authenticated
+                }
+            });
+        });
+    </script>
+    
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="texback">
+            <h2>Tetapan Profil</h2>
+            <div class="profile-info">
+                <img id="profile-picture" class="profile-pic" src="https://via.placeholder.com/150" alt="Profile Picture">
+                <h3><span id="profile-name">Nama</span> (<span id="profile-username">Username</span>)</h3>
+                <p>Kelas: <strong id="display-class"></strong></p>
+                <p>Rumah: <strong id="display-house"></strong></p>
+                <p>Jawatan: <strong id="display-position"></strong></p>
+                <button onclick="toggleForm()">Kemas Kini Maklumat</button>
+            </div>
+            <form class="profile-form" id="update-form" onsubmit="window.updateProfile(event)">
+                <h3>Kemaskini Profil</h3>
+                <label for="profile-picture-input">Gambar Profil</label>
+                <input type="file" id="profile-picture-input" accept="image/*">
+                
+                <label for="name">Nama</label>
+                <input type="text" id="profile-name" placeholder="Nama anda" value="">
+                
+                <label for="username">Emel</label>
+                <input type="text" id="profile-username" placeholder="Emel anda" value="" readonly>  <!-- Readonly if email shouldn't be changed -->
+                
+                <label for="profile-class">Kelas</label>
+                <input type="text" id="profile-class" placeholder="Kelas">
+                
+                <label for="profile-house">Rumah</label>
+                <input type="text" id="profile-house" placeholder="Rumah">
+                
+                <label for="profile-position">Jawatan</label>
+                <input type="text" id="profile-position" placeholder="Jawatan">
+
+                <button type="submit">Simpan Perubahan</button>
+            </form>
+        </div>
+    </section>
+
+</body>
+
+</html>

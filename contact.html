@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubungi Kami</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Mini frame styling for Google Maps */
+        .map-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        iframe {
+            display:inline-block;
+            border: 0;
+            width: 100%;
+            max-width: 1400px;
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script type="module">
+        window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden'; // Disable scrolling
+            } else {
+                document.body.style.overflow = ''; // Enable scrolling
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <section class="texback">
+            <h1>Hubungi Kami</h1>
+            <p>Email: rasmi@sakti.edu.my</p>
+            <p>Nombor Telefon: 07 822 2475</p>
+        </section>
+        <section class="map-container">
+            <h2>Kami Ada di Sini</h2>
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3184.093771508281!2d104.2253476!3d1.5666604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da4c69b36136b7%3A0xb0dc7d67f933bc62!2sSMS%20Kota%20Tinggi!5e0!3m2!1sen!2smy!4v1694012899581!5m2!1sen!2smy" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </section>
+        
+    </section>
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+
+    <!-- Google Maps Section -->
+
+
+    <footer>
+        <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>        
+    </footer>
+</body>
+</html>

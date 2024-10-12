@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRASASTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .flowchart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 30px;
+            gap: 0px; /* Reduce gap for tighter alignment */
+            background-color: #f5f5f5b9;
+            border-radius: 15px;
+            box-shadow: 0 0 15px #ffffff, 0 0 30px #ffffff, 0 0 45px #ffffff; /* Multi-layered yellow glow */
+            transition: 0.3s ease; /* Smooth transition for glow */
+        }
+
+        .flowchart-box {
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            width: 160px;
+            font-size: 16px;
+            position: relative;
+            transition: 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px 10px; /* Adjust margin for better spacing */
+        }
+
+        .flowchart-box:hover {
+            transform: scale(1.1);
+        }
+
+        .flowchart-box small {
+            display: block;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #fff;
+        }
+
+
+        /* Arrow Styling */
+        .arrow-right-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .arrow-right {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .arrow-right .line {
+            height: 4px;
+            width: 30px; /* Adjust line length */
+            background-color: #333; /* Line color */
+        }
+
+        .arrow-right .triangle {
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #333; /* Triangle color */
+            margin-left: -2px; /* Adjust spacing between line and arrow */
+        }
+
+        /* Hero Section Styling */
+        .hero {
+            text-align: center;
+            padding: 30px;
+            background-color: #333;
+            margin: 20px auto;
+            color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .logo-image {
+            width: 180px;
+            margin-bottom: 20px;
+            border-radius: 10px; 
+            padding: 0px; /* Optional: Add padding to create space between the border and logo */
+            box-shadow: 0 0 15px #fff; /* Multi-layered yellow glow */
+            transition: 0.3s ease; /* Smooth transition for glow */
+            margin-top: 4%
+        }
+
+        .leadership-section {
+            width: 100%;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border: solid 5px #fff;
+            box-shadow: rgba(0, 0, 0, 0.1)
+        }
+
+        .flowchart-title {
+            font-size: 28px; /* Adjust the font size */
+            color: #333; /* Match with flowchart box color */
+            text-align: center;
+            width: 100%; /* Take full width of the container */
+            margin-bottom: 20px; /* Space below the title */
+            padding-bottom: 10px; /* Optional: Additional padding */
+            border-bottom: 2px solid #333; /* Optional: Adds a border below the title */
+            font-weight: bold; /* Make the title stand out */
+        }
+
+        .leadership-section h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .leadership-section p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .leadership-section a {
+            color:#fff
+        }
+    </style>
+<script type="module">
+    window.toggleNavPane = function () {
+            const sidebar = document.getElementById('sidebarz');
+
+            // Toggle the 'active' class to open/close the sidebar
+            sidebar.classList.toggle('active');
+
+            // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+            
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <img src="https://www.sakti.edu.my/images/2021/PRASASTI/WhatsApp_Image_2021-08-11_at_160604.jpeg" alt="PRASASTI Logo" class="logo-image">
+
+        <div class="leadership-section">
+            <h2>Persatuan Alumni SAKTI (PRASASTI)</h2>
+            <p><strong>Instagram:</strong> <a href="https://www.instagram.com/prasasti_official/" target="_blank">@prasasti_official</a></p>
+            <p><strong>Facebook:</strong> <a href="https://www.facebook.com/prasasti.sakti.org.my/" target="_blank">@Prasasti SAKTI</a></p>
+        </div>
+        <div class="flowchart-container">
+            <h1 class="flowchart-title">BATCH PRASASTI</h1>
+            <!-- Flowchart Boxes with Centered Arrows -->
+            <a href="1998.html" class="flowchart-box">1998<br>SPM 1998</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+            
+            <a href="1999.html" class="flowchart-box">1999<br>RUDIMENT</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2000.html" class="flowchart-box">2000<br>PIONEERZ</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2001.html" class="flowchart-box">2001<br>FIVERS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2002.html" class="flowchart-box">2002<br>85IVERS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2003.html" class="flowchart-box">2003<br>LEGACY OF PANTHERA (LOP)</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2004.html" class="flowchart-box">2004<br>5IVE</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2005.html" class="flowchart-box">2005<br>DRAGON'S ODYSSEY</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2006.html" class="flowchart-box">2006<br>ARMY OF SLY</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2007.html" class="flowchart-box">2007<br>ESPRIT CABALLUS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2008.html" class="flowchart-box">2008<br>PHALANX</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2009.html" class="flowchart-box">2009<br>92 DEGREES</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2010.html" class="flowchart-box">2010<br>THE LEGEND (TL)</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2011.html" class="flowchart-box">2011<br>SAGACIOUS 94</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2012.html" class="flowchart-box">2012<br>WOW PARAGON 95</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2013.html" class="flowchart-box">2013<br>LEGACY OF LENITY (LOL)</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2014.html" class="flowchart-box">2014<br>STALWART</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2015.html" class="flowchart-box">2015<br>ZEST OF FIXITY</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2016.html" class="flowchart-box">2016<br>VIBRATION OF GRANDIOSE (VOG)</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2017.html" class="flowchart-box">2017<br>DEXTEROUS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2018.html" class="flowchart-box">2018<br>BEQUEATH OF STOUT (BOS)</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2019.html" class="flowchart-box">2019<br>PRODIGY</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2020.html" class="flowchart-box">2020<br>ZENITH</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2021.html" class="flowchart-box">2021<br>STRENUOUS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2022.html" class="flowchart-box">2022<br>ZEALOUS</a>
+            <div class="arrow-right-container">
+                <div class="arrow-right">
+                    <div class="line"></div>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+
+            <a href="2023.html" class="flowchart-box">2023<br>INVICTUS</a>
+            <!-- Continue with the same structure for more boxes -->
+        </div>
+    </section>
+
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+
+    <footer>
+        <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>
+    </footer>
+</body>
+</html>

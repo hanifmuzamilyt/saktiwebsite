@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademik SAKTI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+/* Basic styling for the page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+    height: 35px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero {
+    background-color: #e9ecef;
+    padding: 50px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.sidebar h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Arrange items side by side */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.sidebar ul li {
+    margin-right: 8px; /* Space between items */
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    display: block;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: #575757;
+    color: #fff;
+}
+
+.sidebar ul li a:focus {
+    background-color: #313131;
+    color: #fff;
+}
+
+.category-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-section {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.category-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.category-section p {
+    color: #666;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    margin-top: 20px;
+    border-top: 2px solid #ccc;
+}
+
+.content h3 {
+    font-size: 32px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.pencapaian-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.pencapaian-table th, .pencapaian-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.pencapaian-table th {
+    background-color: #1f1f1f;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+.pencapaian-table td {
+    font-size: 16px;
+    color: black;
+    text-align: center;
+}
+
+.pencapaian-table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pencapaian-table a:hover {
+    text-decoration: underline;
+}
+
+.category-headline {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pencapaian-headline {
+    text-align: center;
+    font-size: 28px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.slider {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slide img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.slide h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.slide p {
+    font-size: 18px;
+    color: #666;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 18px;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Sidebar Navigation Pane -->
+        <div class="sidebarz" id="sidebarz">
+            <span onclick="toggleNavPane()" class="nav-toggle-icon"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></span>
+            <h1>SAKTI Website</h1>
+            <a href="carta-guru.html">Carta Guru</a>
+            <a href="carta-murid.html">Carta Murid</a>
+            <a href="batches.html">Batch</a>
+            <a href="hasil-murid.html">Hasil Murid</a>
+            <a href="jualan.html">Jualan</a>
+            <a href="feedback.html">Maklum Balas</a>
+            <p>Events:</p>
+            <div class="website-linkss">
+                <div class="thumbnail-containers">
+                    <!-- Tambah pautan thumbnail di sini -->
+                    <a href="https://ains.moe.gov.my/" target="_blank" class="thumbnail-links">
+                        <img src="https://i.ytimg.com/vi/Qv23UgVaBCQ/maxresdefault.jpg" alt="SAKTI Website">
+                        AINS
+                    </a>
+                    <a href="https://www.bookxcess.com" target="_blank" class="thumbnail-links">
+                        <img src="https://i.newscdn.net/publisher-c1a3f893382d2b2f8a9aa22a654d9c97/2020/08/52e1eed45dca57be16a4bab054b03e95.jpg=s600" alt="SAKTI Website">
+                        BookXcess
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <span class="nav-toggle-icon" onclick="toggleNavPane()">&#9776;</span>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+        
+    <section class="hero">
+        <section class="texback">
+            <h1>Akademik SAKTI</h1>
+            <p>Perkembangan murid-murid SAKTI dalam bidang akademik.</p> 
+        </section>
+        <section class="content">
+            <h3>Kategori</h3>
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul>                    
+                    <li><a href="#" data-category="daftar-pertandingan">PK Pentadbiran</a></li>
+                    <li><a href="#" data-category="pencapaian">Pencapaian SPM</a></li>
+                    <li><a href="#" data-category="berita-terkini">Ranking SPM </a></li>
+                    <li><a href="#" data-category="takwim-pertandingan">Keputusan Peperiksaan</a></li>
+                    <li><a href="#" data-category="aktiviti-kokurikulum">Berita</a></li>
+                </ul>
+            </aside>
+            <div class="headlines">
+                <h3 id="headline-daftar-pertandingan" class="category-headline" style="display: none;">Penolong Kanan Pentadbiran (PK1)</h3>
+                <h3 id="headline-pencapaian" class="category-headline" style="display: block;">Pencapaian SPM SAKTI 2012-2023</h3>
+                <h3 id="headline-berita-terkini" class="category-headline" style="display: none;">Top 10 Ranking SPM Sekolah Berasrama Penuh 2024</h3>
+                <h3 id="headline-takwim-pertandingan" class="category-headline" style="display: none;">Keputusan Peperiksaan 2024</h3>
+                <h3 id="headline-aktiviti-kokurikulum" class="category-headline" style="display: none;">Aktiviti Kokurikulum</h3>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider">
+                    <div class="slides" id="pencapaian">
+                        <!-- Headline for Pencapaian -->
+                        
+                        <!-- Slides for Pencapaian -->
+                        <table class="pencapaian-table">
+                            <thead>
+                                <tr>
+                                    <th>Tahun</th>
+                                    <th>BM</th>
+                                    <th>BI</th>
+                                    <th>MAT</th>
+                                    <th>SEJ</th>
+                                    <th>PI</th>
+                                    <th>PM</th>
+                                    <th>BIO</th>
+                                    <th>KIM</th>
+                                    <th>FIZ</th>
+                                    <th>MT</th>
+                                    <th>GPS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2012</td>
+                                    <td>0.91</td>
+                                    <td>0.96</td>
+                                    <td>0.38</td>
+                                    <td>0.95</td>
+                                    <td>1.13</td>
+                                    <td>0.20</td>
+                                    <td>2.96</td>
+                                    <td>2.85</td>
+                                    <td>2.40</td>
+                                    <td>3.09</td>
+                                    <td>1.73</td>
+                                </tr>
+                                <tr>
+                                    <td>2013</td>
+                                    <td>0.64</td>
+                                    <td>2.09</td>
+                                    <td>0.44</td>
+                                    <td>0.58</td>
+                                    <td>0.78</td>
+                                    <td>1.00</td>
+                                    <td>2.11</td>
+                                    <td>2.52</td>
+                                    <td>2.41</td>
+                                    <td>3.28</td>
+                                    <td>1.65</td>
+                                </tr>
+                                <tr>
+                                    <td>2014</td>
+                                    <td>1.55</td>
+                                    <td>1.70</td>
+                                    <td>0.77</td>
+                                    <td>1.09</td>
+                                    <td>0.83</td>
+                                    <td>1.50</td>
+                                    <td>1.57</td>
+                                    <td>1.69</td>
+                                    <td>2.65</td>
+                                    <td>3.57</td>
+                                    <td>1.71</td>
+                                </tr>
+                                <tr>
+                                    <td>2015</td>
+                                    <td>0.72</td>
+                                    <td>2.44</td>
+                                    <td>0.45</td>
+                                    <td>1.47</td>
+                                    <td>1.36</td>
+                                    <td>-</td>
+                                    <td>2.98</td>
+                                    <td>2.14</td>
+                                    <td>2.22</td>
+                                    <td>3.51</td>
+                                    <td>1.92</td>
+                                </tr>
+                                <tr>
+                                    <td>2016</td>
+                                    <td>1.10</td>
+                                    <td>2.19</td>
+                                    <td>0.66</td>
+                                    <td>1.51</td>
+                                    <td>0.94</td>
+                                    <td>1.33</td>
+                                    <td>3.19</td>
+                                    <td>2.02</td>
+                                    <td>2.64</td>
+                                    <td>3.39</td>
+                                    <td>1.96</td>
+                                </tr>
+                                <tr>
+                                        <td>2017</td>
+                                        <td>0.64</td>
+                                        <td>1.53</td>
+                                        <td>0.53</td>
+                                        <td>1.28</td>
+                                        <td>0.51</td>
+                                        <td>0.50</td>
+                                        <td>3.46</td>
+                                        <td>2.41</td>
+                                        <td>2.32</td>
+                                        <td>3.46</td>
+                                        <td>1.79</td>
+                                </tr>
+                                <tr>
+                                        <td>2018</td>
+                                        <td>0.56</td>
+                                        <td>1.53</td>
+                                        <td>0.42</td>
+                                        <td>1.19</td>
+                                        <td>0.30</td>
+                                        <td>-</td>
+                                        <td>2.88</td>
+                                        <td>1.36</td>
+                                        <td>2.16</td>
+                                        <td>3.03</td>
+                                        <td>1.49</td>
+                                </tr>
+                                <tr>
+                                        <td>2019</td>
+                                        <td>0.29</td>
+                                        <td>1.32</td>
+                                        <td>0.43</td>
+                                        <td>0.48</td>
+                                        <td>0.26</td>
+                                        <td>0.67</td>
+                                        <td>2.19</td>
+                                        <td>1.20</td>
+                                        <td>1.63</td>
+                                        <td>2.60</td>
+                                        <td>1.16</td>
+                                </tr>
+                                <tr>
+                                        <td>2020</td>
+                                        <td>0.95</td>
+                                        <td>1.27</td>
+                                        <td>0.21</td>
+                                        <td>0.61</td>
+                                        <td>0.30</td>
+                                        <td>0.67</td>
+                                        <td>2.52</td>
+                                        <td>1.13</td>
+                                        <td>2.01</td>
+                                        <td>2.07</td>
+                                        <td>1.23</td>
+                                </tr>
+                                <tr>
+                                        <td>2021</td>
+                                        <td>0.52</td>
+                                        <td>1.64</td>
+                                        <td>0.40</td>
+                                        <td>1.40</td>
+                                        <td>0.70</td>
+                                        <td>0.00</td>
+                                        <td>2.73</td>
+                                        <td>2.01</td>
+                                        <td>1.55</td>
+                                        <td>3.15</td>
+                                        <td>1.56</td>
+                                </tr>
+                                <tr>
+                                        <td>2022</td>
+                                        <td>0.49</td>
+                                        <td>1.52</td>
+                                        <td>0.48</td>
+                                        <td>1.08</td>
+                                        <td>0.64</td>
+                                        <td>0.50</td>
+                                        <td>2.33</td>
+                                        <td>2.16</td>
+                                        <td>1.77</td>
+                                        <td>3.28</td>
+                                        <td>1.53</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                    
+                    <div class="slides" id="berita-terkini">
+                        <!-- Slides for Berita Terkini -->
+                        <table class="pencapaian-table" prevButton.style.display = 'none' nextButton.style.display = 'none'>
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Sekolah</th>
+                                    <th>GPS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Sekolah Sultan Alam Shah (SAS)</td>
+                                    <td>1.07</td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Kolej Tunku Kurshiah (TKC)</td>
+                                    <td>1.25</td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Sekolah Menengah Sains Tunku Munawir (SASER)</td>
+                                    <td>1.26</td>
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>Sekolah Seri Puteri (SSP)</td>
+                                    <td>1.28</td>
+                                </tr>
+                                <tr>
+                                    <td>5.</td>
+                                    <td>SBP Integrasi Gombak (INTEGOMB)</td>
+                                    <td>1.38</td>
+                                </tr>
+                                <tr>
+                                    <td>6.</td>
+                                    <td>Sekolah Menengah Sains Kuala Terengganu (SESTER)</td>
+                                    <td>1.40</td>
+                                </tr>
+                                <tr></tr>
+                                    <td>7.</td>
+                                    <td>Sekolah Menengah Sains Tunku Aishah Rohani (SGS)</td>
+                                    <td>1.40</td>
+                                </tr>
+                                <tr>
+                                    <td>8.</td>
+                                    <td>Sekolah Tun Fatimah (STF)</td>
+                                    <td>1.42</td>
+                                </tr>
+                                <tr>
+                                    <td>9.</td>
+                                    <td style="color:#ff0000">Sekolah Menengah Sains Kota Tinggi (SAKTI)</td>
+                                    <td style="color:#ff0000">1.44</td>
+                                </tr>
+                                <tr>
+                                    <td>10.</td>
+                                    <td>SBP Integrasi Kuantan (INTEK)</td>
+                                    <td>1.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Add more slides as needed -->
+                    </div>
+                    <div class="slides" id="takwim-pertandingan" style="display: none;">
+                        <!-- Slides for Takwim Pertandingan -->
+                        <div class="slide">
+                            <h2>UPSA Tingkatan 3 2024</h2>
+                            <embed src="C:\Users\HANIF\Desktop\Hanif\SINCA\New folder\images\UPSA F3 2024.pdf" width="800" height="700" type="application/pdf">                        
+                        </div>
+                        <div class="slide">
+                           <h2>UPSA Tingkatan 2 2024</h2>
+                           <img src="https://via.placeholder.com/600x300?text=UPSA+Tingkatan+2" alt="Takwim Pertandingan 1 Image">
+                        </div>
+                        <div class="slide">
+                            <h2>UPSA Tingkatan 1 2024</h2>
+                            <img src="https://via.placeholder.com/600x300?text=UPSA+Tingkatan+1" alt="Takwim Pertandingan 1 Image">
+                        </div>
+                    </div>
+                    <div class="slides" id="daftar-pertandingan" style="display: none;">
+                        <!-- Slides for Daftar Pertandingan -->
+                        <div class="slide">
+                            <img src="images/Puan Jamilah.png" alt="Daftar Pertandingan 1 Image">
+                        </div>
+                        <!-- Add more slides as needed -->
+                    </div>
+                    <div class="slides" id="aktiviti-kokurikulum" style="display: none;">
+                        <!-- Slides for Aktiviti Kokurikulum -->
+                        <div class="slide">
+                            <img src="images/Screenshot 2024-10-01 213006.png" alt="Aktiviti Kokurikulum 2 Image">
+                            <h2>Tahniah, Invictus!</h2>
+                            <p>Batch SPM 2023, Invictus telah berjaya mendapat GPS sebanyak 1.44, dan meletakkan SAKTI di tangga yang ke 9 di Ranking SPM seluruh Sekolah Berasrama Penuh.</p>
+                        </div>
+                        <!-- Add more slides as needed -->
+                    </div>
+                    <button class="prev">&#10094;</button>
+                    <button class="next">&#10095;</button>
+                </div>
+            </div>
+
+        </section>
+        
+    </section>
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+    <footer>
+        <p>&copy; 2024 SAKTI. All rights reserved.</p>
+    </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slidesContainers = document.querySelectorAll('.slides');
+    let index = 0;
+    let currentCategory = 'daftar-pertandingan'; // Default category
+
+    const headlines = {
+        pencapaian: document.getElementById('headline-pencapaian'),
+        'berita-terkini': document.getElementById('headline-berita-terkini'),
+        'takwim-pertandingan': document.getElementById('headline-takwim-pertandingan'),
+        'daftar-pertandingan': document.getElementById('headline-daftar-pertandingan'),
+        'aktiviti-kokurikulum': document.getElementById('headline-aktiviti-kokurikulum')
+    };
+
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+
+    function getSlideCount() {
+        const visibleSlides = document.querySelector(`#${currentCategory}`);
+        return visibleSlides.querySelectorAll('.slide').length;
+    }
+
+    function updateSlider() {
+        slidesContainers.forEach(slides => {
+            if (slides.id === currentCategory) {
+                slides.style.display = 'flex';
+                const offset = -index * 100;
+                slides.style.transform = `translateX(${offset}%)`;
+            } else {
+                slides.style.display = 'none';
+            }
+        });
+
+        // Show the appropriate headline for the current category
+        Object.keys(headlines).forEach(category => {
+            headlines[category].style.display = category === currentCategory ? 'block' : 'none';
+        });
+
+        // Show or hide the prev and next buttons based on the category
+        if (currentCategory === 'pencapaian' || currentCategory === 'daftar-pertandingan') {
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+        } else if (currentCategory === 'berita-terkini') {
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+        } else {
+            prevButton.style.display = 'block';
+            nextButton.style.display = 'block';
+        }
+    }
+
+    document.querySelector('.next').addEventListener('click', () => {
+        const slideCount = getSlideCount();
+        index = (index + 1) % slideCount;
+        updateSlider();
+    });
+
+    document.querySelector('.prev').addEventListener('click', () => {
+        const slideCount = getSlideCount();
+        index = (index - 1 + slideCount) % slideCount;
+        updateSlider();
+    });
+
+    // Category switching logic
+    document.querySelectorAll('.sidebar ul li a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category');
+            if (currentCategory !== category) {
+                currentCategory = category;
+                index = 0; // Reset to the first slide
+                updateSlider();
+            }
+        });
+    });
+
+    updateSlider(); // Initial call to display the default category
+});
+
+window.toggleNavPane = function () {
+    const sidebar = document.getElementById('sidebarz');
+
+    // Toggle the 'active' class to open/close the sidebar
+    sidebar.classList.toggle('active');
+
+    // Optional: If you want to add a class to the body to prevent scrolling when the sidebar is open
+    
+};
+    </script>
+</body>
+</html>

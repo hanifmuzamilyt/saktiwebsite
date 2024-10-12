@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utama</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+    </style>
+    <script>
+
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+
+        // Nama pengguna log masuk sekarang
+        let currentUserName = "";
+        
+        window.onload = () => {
+                loadProfile();  // Load profile details
+                  // Load media for the logged-in user
+        }// Nama penuh pengguna berdaftar akan disimpan di sini
+
+        // Fungsi untuk memuatkan profil pengguna log masuk
+        function loadProfile() {
+            const username = localStorage.getItem('storedUser'); // Ambil nama pengguna log masuk
+    
+            if (!username) {
+                window.location.href = "login.html"; // Alih ke halaman log masuk jika tiada pengguna
+                return;
+            }
+    
+            const userData = JSON.parse(localStorage.getItem(`user_${username}`)); // Dapatkan data dengan `user_` prefix
+    
+            if (userData) {
+                displayComments();
+                currentUserName = userData.name; // Simpan nama penuh pengguna
+                document.getElementById("header-profile-name").innerText = userData.name;
+                document.getElementById("profile-username").innerText = username;
+                document.getElementById("profile-name").innerText = userData.name;
+                document.getElementById("profile-picture").src = userData.profilePicture || "default-profile.png";
+                document.getElementById("display-class").innerText = userData.kelas;
+                document.getElementById("display-house").innerText = userData.rumahSukan;
+                document.getElementById("display-position").innerText = userData.jawatan;
+
+                loadUserMedia(username);
+
+                 // Tunjuk komen apabila profil dimuatkan
+            } else {
+                alert("Data profil tidak ditemui.");
+            }
+        }
+    
+        // Fungsi untuk mencari pengguna berdasarkan input
+        function searchUsers() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const resultsContainer = document.getElementById('results');
+    
+            resultsContainer.innerHTML = ''; // Kosongkan hasil carian terdahulu
+    
+            // Ambil senarai pengguna dari localStorage dengan `user_` prefix
+            const storedUsers = Object.keys(localStorage).filter(key => key.startsWith("user_"));
+            if (storedUsers.length === 0) {
+                resultsContainer.innerHTML = '<p>Tiada pengguna yang didaftar.</p>';
+                return;
+            }
+    
+            // Cari pengguna yang sepadan
+            storedUsers.forEach(userKey => {
+                const userData = JSON.parse(localStorage.getItem(userKey));
+                if (userData && (userData.name.toLowerCase().includes(searchQuery) || userKey.replace("user_", "").toLowerCase().includes(searchQuery))) {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+    
+                    userCard.innerHTML = `
+                        <h3>${userData.name} (${userKey.replace("user_", "")})</h3>
+                        <p><strong>Kelas:</strong> ${userData.kelas}</p>
+                        <p><strong>Rumah Sukan:</strong> ${userData.rumahSukan}</p>
+                        <p><strong>Jawatan:</strong> ${userData.jawatan}</p>
+                        <a href="user_dashboard.html?user=${userKey.replace('user_', '')}" class="dashboard-link">Lihat Dashboard</a>
+
+                    `;
+    
+                    resultsContainer.appendChild(userCard);
+                }
+            });
+
+            resultsContainer.style.display = searchQuery ? 'flex' : 'none';
+    
+            if (resultsContainer.innerHTML === '') {
+                resultsContainer.innerHTML = '<p>Tiada pengguna yang ditemui.</p>';
+            }
+            document.getElementById('search-input').addEventListener('input', function() {
+                const searchQuery = this.value.toLowerCase();
+                const resultsContainer = document.getElementById('results');
+
+                // Hapuskan hasil jika tiada aksara
+                if (searchQuery === '') {
+                    resultsContainer.innerHTML = ''; // Kosongkan hasil jika input kosong
+                } else {
+                    searchUsers(); // Panggil fungsi searchUsers jika ada aksara
+                }
+            });
+        }
+    
+        // Log keluar pengguna
+        function logoutProfile() {
+            localStorage.removeItem('storedUser');
+        }
+    
+
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            const resultsContainer = document.getElementById('results');
+            const searchButton = document.querySelector('#results');
+
+            // Hapuskan hasil jika tiada aksara
+            if (searchQuery === '') {
+                resultsContainer.innerHTML = ''; // Kosongkan hasil jika input kosong
+                searchButton.style.display = 'none'
+            } else {
+                searchUsers(); // Panggil fungsi searchUsers jika ada aksara
+            }
+        });
+        
+
+        function uploadMedia(event) {
+            event.preventDefault();
+            const username = localStorage.getItem('storedUser');
+            const mediaUrl = document.getElementById('media-url').value.trim();
+            const mediaCaption = document.getElementById('media-caption').value.trim();
+
+            if (!username || !mediaUrl) {
+                alert("Please enter a valid URL and ensure you are logged in.");
+                return;
+            }
+
+            // Retrieve the current user's data
+            const userData = JSON.parse(localStorage.getItem(`user_${username}`)) || {};
+            const userMedia = userData.media || [];
+
+            // Add the new media URL and caption as an object
+            userMedia.push({ url: mediaUrl, caption: mediaCaption });
+
+            userData.media = userMedia;
+
+            // Save updated user data
+            localStorage.setItem(`user_${username}`, JSON.stringify(userData));
+
+            // Reload media
+            loadUserMedia(username);
+
+            // Clear the input fields
+            const mediaUrlInput = document.getElementById('media-url');
+            const mediaCaptionInput = document.getElementById('media-caption');
+            if (mediaUrlInput) mediaUrlInput.value = '';
+            if (mediaCaptionInput) mediaCaptionInput.value = '';
+        }
+
+        
+        // Function to load user's media and display on the dashboard
+        function loadUserMedia(username) {
+            const mediaListContainer = document.getElementById('media-list');
+            if (!mediaListContainer) return; // Ensure the container exists
+            mediaListContainer.innerHTML = ''; // Clear existing media
+
+            // Retrieve user data
+            const userData = JSON.parse(localStorage.getItem(`user_${username}`)) || {};
+            const mediaList = userData.media || [];
+
+            // Display each media item for this user
+            mediaList.forEach((mediaItem, index) => {
+                const mediaElement = document.createElement('li');
+
+                // Add media content based on URL type
+                let embedUrl = mediaItem.url;
+                if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be')) {
+                    if (embedUrl.includes('watch?v=')) {
+                        embedUrl = embedUrl.replace('watch?v=', 'embed/');
+                    }
+                    mediaElement.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                } else {
+                    mediaElement.innerHTML = `<a href="${embedUrl}" target="_blank">${mediaItem.url}</a>`;
+                }
+
+                // Display the caption if it exists
+                if (mediaItem.caption) {
+                    const captionElement = document.createElement('p');
+                    captionElement.className = 'media-caption';
+                    captionElement.innerText = mediaItem.caption;
+                    mediaElement.appendChild(captionElement);
+                }
+
+                // Add delete button
+                const storedUser = localStorage.getItem('storedUser');
+                if (storedUser === username) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.innerText = 'Delete';
+                    deleteBtn.onclick = () => deleteMedia(index, username);
+                    mediaElement.appendChild(deleteBtn);
+                }
+
+                mediaListContainer.appendChild(mediaElement);
+            });
+        }
+        function deleteMedia(index, username) {
+            const userData = JSON.parse(localStorage.getItem(`user_${username}`)) || {};
+            const userMedia = userData.media || [];
+
+            // Remove the selected media item
+            userMedia.splice(index, 1);
+            userData.media = userMedia;
+
+            // Save updated data back to localStorage
+            localStorage.setItem(`user_${username}`, JSON.stringify(userData));
+
+            // Reload media to reflect changes
+            loadUserMedia(username);
+        }
+
+        
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            document.getElementById(sectionId).classList.add('active');
+
+            // Set active tab
+            const tabs = document.querySelectorAll('.category-nav a');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function displayComments() {
+            const commentSection = document.getElementById('community-comments');
+            commentSection.innerHTML = '';
+
+            // Display comments for registered users only
+            comments.forEach((comment, index) => {
+                // Retrieve the username from the stored user data
+                const storedUsers = Object.keys(localStorage).filter(key => key.startsWith("user_"));
+                const matchedUser = storedUsers.find(key => {
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    return userData && userData.name === comment.user; // Match based on the full name
+                });
+
+                // Get the `username` from the matched key
+                const username = matchedUser ? matchedUser.replace("user_", "") : null;
+
+                if (username) { // Only display if the username is found
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment';
+
+                    // Create a clickable link for the user that redirects to `user_dashboard.html`
+                    commentDiv.innerHTML = `
+                        <h4>
+                            <a href="user_dashboard.html?user=${username}" class="dashboard-link">${comment.user}</a>:
+                        </h4>
+                        <p>${comment.text}</p>
+                        <button class="delete-comment-btn" onclick="deleteComment(${index})">Padam</button>
+                    `;
+                    commentSection.appendChild(commentDiv);
+                }
+            });
+        }
+
+        // Fungsi untuk semak sama ada pengguna berdaftar
+        function isRegisteredUser(fullName) {
+            const storedUsers = Object.keys(localStorage).filter(key => key.startsWith("user_"));
+            return storedUsers.some(userKey => {
+                const userData = JSON.parse(localStorage.getItem(userKey));
+                return userData && userData.name === fullName;
+            });
+        }
+
+        // Fungsi untuk tambah komen baru
+        function postComment() {
+            const commentInput = document.getElementById('comment-input');
+            const commentText = commentInput.value.trim();
+            if (commentText) {
+                const newComment = {
+                    user: currentUserName, // Gunakan nama penuh pengguna yang log masuk
+                    text: commentText,
+                    id: new Date().getTime() // ID unik untuk komen
+                };
+                comments.push(newComment);
+                localStorage.setItem('comments', JSON.stringify(comments)); // Simpan dalam localStorage
+                displayComments();
+                commentInput.value = '';
+            }
+        }
+
+        // Fungsi untuk memadam komen
+        function deleteComment(index) {
+            // Hanya benarkan pemilik komen atau admin untuk memadam
+            if (comments[index].user === currentUserName) {
+                comments.splice(index, 1);
+                localStorage.setItem('comments', JSON.stringify(comments)); // Simpan kembali komen yang telah dikemaskini
+                displayComments(); // Paparkan komen terkini
+            } else {
+                alert("Anda hanya boleh memadam komen anda sendiri.");
+            }
+        }
+
+
+
+    // Paparkan komen apabila halaman dimuat
+    </script>
+    
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><img src="https://www.sakti.edu.my/images/logo_sakti_WARNA.png" alt="Logo" class="logo"></a></li>
+                <li><a href="dashboard.html">Utama</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="contact.html">Hubungi Kami</a></li>
+                <li><a href="login.html" onclick="logoutProfile()">Log Keluar</a></li>
+                <li><a href="profile.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+   
+
+
+    <section class="hero">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Cari pengguna dengan nama atau username..." oninput="searchUsers()">
+        </div>
+        <div id="results"></div>
+        <section class="texback">
+            <h2>Selamat Datang, <span id="header-profile-name">User</span></h2>
+            <p>Anda telah berjaya log masuk!</p>
+            
+        </section>
+        
+
+        <ul class="category-nav">
+            <li><a href="#" class="active" onclick="showSection('profile')">Maklumat Diri</a></li>
+            <li><a href="#" onclick="showSection('media')">Media</a></li>
+            <li><a href="#" onclick="showSection('achievements')">Pencapaian</a></li>
+            <li><a href="#" onclick="showSection('community')">Ruang Komuniti</a></li>
+        </ul>
+
+    <!-- Profile Section -->
+    <div id="profile" class="content-section active">
+        <h2>Maklumat Diri</h2>
+        <div class="profile-info">
+            <a href="profile.html"><img id="profile-picture" src="default-profile.png" alt="Profile Picture" class="profile-pic"></a>
+            <p><strong>Nama Penuh:</strong> <span id="profile-name"></span></p>
+            <p><strong>Nombor Kad Pengenalan:</strong> <span id="profile-username"></span></p>
+            <p><strong>Kelas:</strong> <span id="display-class">Tiada</span></p>
+            <p><strong>Rumah Sukan:</strong> <span id="display-house">Tiada</span></p>
+            <p><strong>Jawatan:</strong> <span id="display-position">Tiada</span></p>
+        </div>
+    </div>
+
+    <!-- Media Section -->
+    <div id="media" class="content-section">
+
+
+        <section class="media-section">
+            <h3>Upload Your Media</h3>
+            <form class="media-upload-form" onsubmit="uploadMedia(event)">
+                <input type="url" id="media-url" placeholder="Enter media URL (e.g., YouTube)" required>
+                <input type="text" id="media-caption" placeholder="Enter caption (optional)">
+                <button type="submit">Upload</button>
+            </form>
+            <h3>My Uploaded Media</h3>
+            <ul id="media-list" class="media-list"></ul>
+        </section>
+    </div>
+
+    <div id="achievements" class="content-section">
+        <h2>Pencapaian</h2>
+        <div class="achievements">
+            <div class="achievement-card">
+                <h4>Pemuat Naik Pertama!</h4>
+                <p>Anda berjaya memuat naik media pertama anda!</p>
+            </div>
+            <div class="achievement-card">
+                <h4>Interaksi Pertama!</h4>
+                <p>Anda memberi komen pada media pengguna lain.</p>
+            </div>
+            <div class="achievement-card">
+                <h4>Berhubung dengan 3 Rakan</h4>
+                <p>Anda berjaya berinteraksi dengan 3 rakan baru.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="community" class="content-section">
+        <h2>Ruang Komuniti</h2>
+        <div id="community-comments">
+        </div>
+        <textarea id="comment-input" placeholder="Tinggalkan komen..."></textarea>
+        <button onclick="postComment()">Komen</button>
+    </div>
+        
+    </section>
+    
+
+    
+
+    <!-- Search Bar for User Dashboards -->
+    
+    <!-- Useful Links Section -->
+    <div class="website-links">
+        <h3>Useful Links</h3>
+        <div class="thumbnail-container">
+            <!-- Tambah pautan thumbnail di sini -->
+            <a href="https://www.sakti.edu.my" class="thumbnail-link">
+                <img src="images/header_2024.png" alt="SAKTI Website">
+                <p>SAKTI Official Website</p>
+            </a>
+            <a href="event2024.html" class="thumbnail-link">
+                <img src="images/IMG_1913.JPG" alt="Ministry of Education">
+                <p>Event 2024</p>
+            </a>
+            <a href="news.html" class="thumbnail-link">
+                <img src="images/New Project.png" alt="MyResults">
+                <p>Kokurikulum SAKTI</p>
+            </a>
+            <a href="akademik.html" class="thumbnail-link">
+                <img src="images/NURTURER.png" alt="MyResults">
+                <p>Akademik SAKTI</p>
+            </a>
+            <a href="prasasti.html" class="thumbnail-link">
+                <img src="images/PRASAS.png" alt="MyResults">
+                <p>PRASASTI</p>
+            </a>
+        </div>
+    </div>
+
+    
+    <footer>
+        <p>&copy; 2024 MySAKTI. SAKTI Menerajui.</p>
+    </footer>
+</body>
+
+</html>
