@@ -57,6 +57,64 @@
             transform: scale(1.1);
         }
 
+        .tutorial {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .tutorial h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .container h3{
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step h4 {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .step {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .video-container {
+        text-align: center; /* This centers the video horizontally */
+        }
+
+        video {
+        max-width: 100%;
+        height: auto;
+        }
+
+
     </style>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -529,6 +587,20 @@
 
         <!-- Media Section -->
         <div id="media" class="content-section">
+            <section class="tutorial">
+                <h3>Cara Muat Naik Video</h3>
+                <div class="step">
+                    <h4>Note:</h4>
+                    <p>Jangan "Copy" bahagian "&ab_channel=ChannelYouTube"</p>
+                </div>
+                <div class="video-container">
+                    <video controls>
+                      <source src="images/Screen Recording 2024-10-13 224641.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+
+            </section>
 
 
             <section class="media-section">
