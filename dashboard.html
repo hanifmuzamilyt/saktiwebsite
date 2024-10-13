@@ -407,6 +407,36 @@
                 console.error("Error loading media:", error);
             }
         }
+
+        window.deleteMedia = async function(index, uid) {
+            const userRef = doc(db, 'users', uid);
+            
+            try {
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const mediaList = userData.media || [];
+
+                    if (index >= 0 && index < mediaList.length) {
+                        // Remove the media item at the given index
+                        mediaList.splice(index, 1);
+
+                        // Update the user's media array in Firestore
+                        await updateDoc(userRef, { media: mediaList });
+
+                        console.log("Media deleted successfully");
+                        loadUserMedia(uid); // Reload media after deletion
+                    } else {
+                        console.error("Invalid media index");
+                    }
+                } else {
+                    console.error("No such document!");
+                }
+            } catch (error) {
+                console.error("Error deleting media:", error);
+                alert("Failed to delete media. Please try again.");
+            }
+        };
         async function fetchCommentsFromDatabase() {
             try {
                 const commentsRef = collection(db, 'comments'); // Corrected line
