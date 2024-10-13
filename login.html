@@ -8,7 +8,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -34,9 +34,13 @@
 
             // Attach event listener for login
             const loginForm = document.getElementById("login-form");
+            const guestLoginButton = document.getElementById("guest-login");
             if (loginForm) {
                 loginForm.addEventListener("submit", handleLogin);
             }
+            if (guestLoginButton) {
+                guestLoginButton.addEventListener("click", handleGuestLogin);
+        }
         });
 
         // Function to handle login
@@ -59,6 +63,19 @@
             } catch (error) {
                 console.error("Error logging in:", error);
                 alert("Login failed. Please try again.");
+            }
+        }
+
+        async function handleGuestLogin() {
+            try {
+                const userCredential = await signInAnonymously(auth);
+                console.log("Logged in as Guest:", userCredential.user);
+                
+                // Redirect to the dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error("Error logging in as guest:", error);
+                alert("Guest login failed. Please try again.");
             }
         }
         window.toggleNavPane = function () {
@@ -131,6 +148,7 @@
                 <input type="password" id="password" name="password" required>
 
                 <button type="submit">Login</button>
+                <button type="button" id="guest-login">Login as Guest</button>
             </form>
         </section>
 
