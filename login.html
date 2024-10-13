@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Masuk</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .test {
+            margin-top: 10px;
+        }
+    </style>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -137,8 +142,8 @@
     </header>
 
     <section class="hero">
-        <section class="texback">
-            <h2>Login to Your Account</h2>
+        <section class="texback" style="margin-top: 6%; margin-bottom: 2%;">
+            <h2>Log Masuk Akaun Anda</h2>
             <!-- Ensure the form has the correct ID -->
             <form id="login-form" class="login-form">
                 <label for="email">Email:</label>
@@ -147,12 +152,12 @@
                 <label for="password">Kata Laluan:</label>
                 <input type="password" id="password" name="password" required>
 
-                <button type="submit">Login</button>
-                <button type="button" id="guest-login">Login as Guest</button>
+                <button type="submit">Log Masuk</button>
+                <button type="button" class="test" id="guest-login">Log Masuk Sebagai Tetamu</button>
             </form>
         </section>
 
-        <p>Don't have an account? <a href="signup.html">Create an account</a>.</p>
+        <p>Tiada Akaun? <a href="signup.html">Daftar di sini</a>.</p>
     </section>
 
     <footer>
