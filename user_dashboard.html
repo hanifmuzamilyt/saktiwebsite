@@ -298,7 +298,7 @@
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, addDoc, serverTimestamp, updateDoc, arrayUnion, collection, getDocs, query, where, deleteDoc, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 
@@ -314,6 +314,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+
+        let debounceTimer;
+        document.getElementById('search-input').oninput = function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(searchUsers, 300); // Wait 300ms before triggering searchUsers
+        };
 
 
         async function loadUserDashboard() {
@@ -373,46 +379,72 @@
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '';
 
-            if (input.length === 0) return;
+            if (input.length === 0) {
+                resultsDiv.innerHTML = '';
+                resultsDiv.style.display = 'none';
+                return;
+            }
+            resultsDiv.style.display = 'block';
 
             const usersRef = collection(db, 'users');
-            const q = query(usersRef, where('username', '>=', input), where('username', '<=', input + '\uf8ff'));
+            
+            // Construct two separate queries for name and username
+            const usernameQuery = query(usersRef, where('username', '>=', input), where('username', '<=', input + '\uf8ff'));
+            const nameQuery = query(usersRef, where('name', '>=', input), where('name', '<=', input + '\uf8ff'));
 
             try {
-                const querySnapshot = await getDocs(q);
+                const [usernameSnapshot, nameSnapshot] = await Promise.all([
+                    getDocs(usernameQuery),
+                    getDocs(nameQuery)
+                ]);
 
-                if (querySnapshot.empty) {
-                    resultsDiv.innerHTML = "<p>No results found.</p>";
-                    return;
+                const combinedResults = new Set();
+
+                // Helper function to handle query snapshots
+                function processSnapshot(snapshot) {
+                    snapshot.forEach((doc) => {
+                        const user = doc.data();
+                        const uid = doc.id; // Get the UID from the document ID
+
+                        if (!combinedResults.has(uid)) { // Avoid duplicate entries
+                            combinedResults.add(uid);
+
+                            // Create the user card element
+                            const userElement = document.createElement('div');
+                            userElement.className = 'user-card';
+
+                            userElement.innerHTML = `
+                                <div class="user-details">
+                                    <h3>${user.name || 'No Name Available'}</h3>
+                                    <p>Username: ${user.username || 'N/A'}</p>
+                                    <p>Class: ${user.class || 'N/A'}</p>
+                                    <p>House: ${user.house || 'N/A'}</p>
+                                    <p>Position: ${user.position || 'N/A'}</p>
+                                    <button class="dashboard-link" onclick="window.location.href='user_dashboard.html?user=${uid}'">View Dashboard</button>
+                                </div>
+                            `;
+
+                            resultsDiv.appendChild(userElement);
+                        }
+                    });
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const user = doc.data();
-                    const uid = doc.id; // Get the UID from the document ID
+                // Process both query snapshots
+                processSnapshot(usernameSnapshot);
+                processSnapshot(nameSnapshot);
 
-                    // Create the user card element
-                    const userElement = document.createElement('div');
-                    userElement.className = 'user-card';
+                if (combinedResults.size === 0) {
+                    resultsDiv.innerHTML = "<p>No results found.</p>";
+                }
 
-                    userElement.innerHTML = `
-                        <div class="user-details">
-                            <h3>${user.name || 'No Name Available'}</h3>
-                            <p>Username: ${user.username || 'N/A'}</p>
-                            <p>Class: ${user.class || 'N/A'}</p>
-                            <p>House: ${user.house || 'N/A'}</p>
-                            <p>Position: ${user.position || 'N/A'}</p>
-                            <button class="dashboard-link" onclick="window.location.href='user_dashboard.html?user=${uid}'">View Dashboard</button>
-                        </div>
-                    `;
-
-                    resultsDiv.appendChild(userElement);
-                });
             } catch (error) {
                 console.error("Error searching users: ", error);
                 alert("Error searching users. Please check the console for more details.");
                 resultsDiv.innerHTML = "<p>Error retrieving results. Please try again.</p>";
             }
         }
+
+        
 
         // Function to load user's media files
         async function loadUserMedia(uid) { // Accept uid as parameter
