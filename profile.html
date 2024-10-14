@@ -37,10 +37,12 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
 
         .profile-form {
-            display: none;
+            display: flex;
+            flex-direction: column;
             text-align: left;
         }
 
@@ -74,6 +76,16 @@
         }
 
         .profile-form input[type="file"], .profile-form input[type="text"], .profile-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+        }
+
+        .profile-form select{
             width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
@@ -341,13 +353,52 @@
                 <input type="text" id="profile-username" placeholder="Emel anda" value="" readonly>  <!-- Readonly if email shouldn't be changed -->
                 
                 <label for="profile-class">Kelas</label>
-                <input type="text" id="profile-class" placeholder="Kelas">
+                <select id="profile-class">
+                    <option value="1 Baiduri">1 Baiduri</option>
+                    <option value="1 Delima">1 Delima</option>
+                    <option value="1 Mutiara">1 Mutiara</option>
+                    <option value="1 Intan">1 Intan</option>
+                    <option value="1 Nilam">1 Nilam</option>
+                    <option value="2 Baiduri">2 Baiduri</option>
+                    <option value="2 Delima">2 Delima</option>
+                    <option value="2 Mutiara">2 Mutiara</option>
+                    <option value="2 Intan">2 Intan</option>
+                    <option value="2 Nilam">2 Nilam</option>
+                    <option value="3 Baiduri">3 Baiduri</option>
+                    <option value="3 Delima">3 Delima</option>
+                    <option value="3 Mutiara">3 Mutiara</option>
+                    <option value="3 Intan">3 Intan</option>
+                    <option value="3 Nilam">3 Nilam</option>
+                    <option value="4 Baiduri">4 Baiduri</option>
+                    <option value="4 Delima">4 Delima</option>
+                    <option value="4 Mutiara">4 Mutiara</option>
+                    <option value="4 Intan">4 Intan</option>
+                    <option value="4 Nilam">4 Nilam</option>
+                    <option value="5 Baiduri">5 Baiduri</option>
+                    <option value="5 Delima">5 Delima</option>
+                    <option value="5 Mutiara">5 Mutiara</option>
+                    <option value="5 Intan">5 Intan</option>
+                    <option value="5 Nilam">5 Nilam</option>
+                </select>
                 
                 <label for="profile-house">Rumah</label>
-                <input type="text" id="profile-house" placeholder="Rumah">
+                <select id="profile-house">
+                    <option value="Alfa">Alfa</option>
+                    <option value="Beta">Beta</option>
+                    <option value="Gama">Gama</option>
+                    <option value="Sigma">Sigma</option>
+                </select>
                 
                 <label for="profile-position">Jawatan</label>
-                <input type="text" id="profile-position" placeholder="Jawatan">
+                <select id="profile-position">
+                    <option value="Maher">Maher</option>
+                    <option value="Majasti">Majasti</option>
+                    <option value="Masiru">Masiru</option>
+                    <option value="Persakti">Persakti</option>
+                    <option value="PRS">PRS</option>
+                    <option value="SLB">SLB</option>
+                    <option value="Badar">Badar</option>
+                </select>
 
                 <button type="submit">Simpan Perubahan</button>
             </form>
